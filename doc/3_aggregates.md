@@ -41,7 +41,7 @@ GROUP BY code_reg;
 ```
 
 EXPLANATIONS: 
-What is an MULTI*, what is a COLLECTION
+- What is an MULTI*, what is a COLLECTION
 - Why ST_Collect is faster than ST_Union
 - http://www.postgis.net/docs/manual-2.0/ST_CollectionExtract.html
 
