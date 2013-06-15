@@ -24,7 +24,7 @@ GROUP BY code_reg;
 ```
 
 
-EXPLANATIONS: 
+About the query : 
 - http://www.postgis.net/docs/manual-2.0/ST_Union.html
 - row_number() and SQL WINDOWING
 
@@ -40,7 +40,7 @@ FROM admin.commune
 GROUP BY code_reg;
 ```
 
-EXPLANATIONS: 
+About the query : 
 - What is an MULTI*, what is a COLLECTION
 - Why ST_Collect is faster than ST_Union
 - http://www.postgis.net/docs/manual-2.0/ST_CollectionExtract.html
@@ -57,7 +57,7 @@ FROM admin.commune
 GROUP BY code_reg;
 ```
 
-EXPLANATIONS: 
+About the query : 
 - http://www.postgis.net/docs/manual-2.0/ST_CollectionHomogenize.html
 
 Merge lines
