@@ -20,5 +20,5 @@ This workshop is hosted on GitHub : https://github.com/vpicavet/postgis-workshop
 Credits go to Oslandia : http://www.oslandia.com
 Please report any bugs, or help improve the workshop. 
 
-The whole workshop is licenced under GPL version 2 or later licence for the SQL code, and CC-By-Sa for the documentation.
+The whole workshop is licenced under CC-By-SA.
 
