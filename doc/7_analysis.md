@@ -31,7 +31,7 @@ FROM rff.station
 ```
 
 
-EXPLANATIONS:
+About the query :
 - spatial references
 - http://www.postgis.net/docs/manual-2.0/ST_Transform.html
 
@@ -56,7 +56,7 @@ Practice :
 - View it with QGIS DB Manager
 - Then slightly change the simplify parameter
 
-EXPLANATIONS:
+About the query :
 - Generalization
 - Topology issue
 - http://www.postgis.net/docs/manual-2.0/ST_Simplify.html
@@ -122,7 +122,7 @@ where
 ```
 
 
-EXPLANATIONS:
+About the query :
 - Consideration on performances based on spatial index and spatial operator
 
 Nearest neighbors
@@ -147,7 +147,7 @@ ORDER BY r.geom <-> c.geom
 ```
 
 
-EXPLANATIONS:
+About the query :
 - Bbox and geometry
 - Intesection operator &&
 - KNN operators <#> and <-> 
