@@ -1,6 +1,18 @@
 PostGIS workshop
 ================
 
+Resources
+---------
+
+Some useful links :
+* PostGIS Home : http://www.postgis.net
+* PostGIS Documentation : http://www.postgis.net/docs/manual-2.0/
+* PostgreSQL Documention : http://www.postgresql.org/docs/9.2/interactive/index.html
+* This workshop on GitHub : https://github.com/vpicavet/postgis-workshop
+
+Get started
+-----------
+
 The first step is to initialize the database and load the data.
 
 Launch the two scripts in the _script_ directory to create the database and load the data.
