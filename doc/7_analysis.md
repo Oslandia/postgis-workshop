@@ -144,7 +144,7 @@ AND   r.toponyme IS NOT NULL
 AND   (c.population * 1000) > 100000
 AND   r.geom && ST_Expand(c.geom, 10000)
 ORDER BY r.geom <-> c.geom
-```SQL
+```
 
 
 EXPLANATIONS:
