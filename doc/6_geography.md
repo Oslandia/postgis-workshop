@@ -20,7 +20,7 @@ SELECT (row_number() OVER ()) AS gid,
 FROM rff.station;
 ```
 
-EXPLANATIONS:
+About the query :
 - geometry vs geography
 - geography only for EPSG:4326
 - cast 
@@ -51,7 +51,7 @@ WHERE  s1.id > s2.id  -- to avoid to compute dist(a,b) and dist(b,a)
 ```
 
 
-EXPLANATIONS
+About the query :
 - Distance and measure functions can deal with geography
 - Look at distance result if you do not cast to geography
 
