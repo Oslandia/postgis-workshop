@@ -19,18 +19,17 @@ Check metadata
 -- Check that metadata informations are correctly set
 
 SELECT * FROM geometry_columns;
-
-
--- EXPLANATIONS:
---  With PostGIS 2.0 geometry_columns is now a view
---  so no risk to decorrelate geometry data stored
---  and metadata (from geometry_columns).
--- Check if any invalid geometry in a dataset
-
 ```
+
+
+About the query :
+- With PostGIS 2.0 geometry_columns is now a view so no risk to decorrelate geometry data stored and metadata (from geometry_columns).
+
 
 Check data
 ----------
+
+Check if any invalid geometry in a dataset
 
 ```SQL
 
@@ -41,33 +40,23 @@ WHERE NOT ST_IsValid(geom);
 SELECT gid, ST_IsValidReason(geom) 
 FROM admin.commune 
 WHERE NOT ST_IsValid(geom);
-
-
--- NOTA: POINT data are always valid, 
--- We focus here on surfacic data 
--- (far most invalid cases)
-
-
--- EXPLANATIONS: 
---  What is invalid data ?
---  OGC SFS specifications
 ```
+
+
+NOTE : POINT data are always valid, we focus here on surfacic data  (far most invalid cases)
+
+
+About the query : 
+- What is invalid data ?
+- OGC SFS specifications
 
 Check indexes
 -------------
 
-```SQL
+Check if Spatial Indexes were correctly created
 
---  Check if Spatial Indexes were rightly created
--- 
--- with PgAdmin 
---
--- OR
---
--- with psql and \di command
+With PgAdmin or with psql and \di command
 
-
--- EXPLANATIONS: 
---   What is spatial index ?
---   What does it stand for ?
-```
+About indexes : 
+- What is spatial index ?
+- What does it stand for ?
