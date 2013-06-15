@@ -11,7 +11,7 @@ SELECT ST_AsText('POINT(10 10)'::geometry);
 ```
 
 
-EXPLANATIONS:
+About the query :
 - cast
 - OGC WKT syntax 
 
@@ -30,7 +30,7 @@ SELECT ST_AsEWKT(ST_SetSRID('POINT(10 10)'::geometry, 4326));
 ```
 
 
-EXPLANATIONS:
+About the query :
 - SRID
 - http://www.postgis.net/docs/manual-2.0/ST_SRID.html
 - http://www.postgis.net/docs/manual-2.0/ST_SetSRID.html
@@ -53,6 +53,6 @@ SELECT (row_number() OVER ()) AS gid,
 FROM rff.station;
 ```
 
-EXPLANATIONS:
+About the query :
 - http://www.postgis.net/docs/manual-2.0/ST_MakePoint.html
 - http://www.postgis.net/docs/manual-2.0/ST_SetSRID.html
