@@ -51,6 +51,7 @@ WHERE NOT ST_IsValid(geom);
 -- EXPLANATIONS: 
 --  What is invalid data ?
 --  OGC SFS specifications
+```
 
 Check indexes
 -------------
