@@ -12,18 +12,18 @@ SELECT *
 FROM admin.commune 
 ORDER BY population / ST_Area(geom) DESC
 LIMIT 100;
-
-
--- PRACTICAL: View the result in QGIS with DbManager plugin
 ```
+
+
+Practice : 
+- View the result in QGIS with DbManager plugin
 
 Toulouse neighbors
 -------------------
 
+Retrieve all city located around a single one named Toulouse.
+
 ```SQL
-
--- Retrieve all city located around a single one named Toulouse.
-
 
 SELECT c.gid, c.geom, c.nom_comm  
 FROM admin.commune AS c
@@ -31,18 +31,16 @@ WHERE ST_Touches( c.geom,
                   (SELECT geom FROM admin.commune WHERE nom_comm = 'TOULOUSE')
                 )
 ;
-
-
--- PRACTICAL: View the result in QGIS with DbManager plugin
 ```
+Practice : 
+- View the result in QGIS with DbManager plugin
 
 Longest rivers
 --------------
 
+Which rivers are the longests ?
+ 
 ```SQL
-
--- Which rivers are the longests ?
-
 
 SELECT SUM(ST_Length(geom)), Toponyme
 FROM hydro.cours_eau
@@ -50,15 +48,16 @@ WHERE toponyme IS NOT NULL
 GROUP BY toponyme
 ORDER BY SUM(ST_Length(geom)) DESC
 LIMIT 10;
-
--- NOTA: first result is related to data uncompletness
-
--- EXPLANATIONS:
---  - NULL / NOT NULL
---  - GROUP BY and aggregate function as SUM
---  - ORDER BY ASC / DESC
---  - LIMIT
 ```
+
+NOTE: 
+- first result is related to data uncompletness
+
+About the query :
+- NULL / NOT NULL
+- GROUP BY and aggregate function as SUM
+- ORDER BY ASC / DESC
+- LIMIT
 
 Buffers
 -------
@@ -73,8 +72,9 @@ Make some more buffers around some cities. Then around the cities touching Toulo
 Distances
 ---------
 
+-- How far away are big city from Toulouse ?
+
 ```SQL
--- How far big city are away from Toulouse ?
 
 SELECT nom_comm, 
        population * 1000 AS population,
@@ -82,8 +82,8 @@ SELECT nom_comm,
 FROM admin.commune
 WHERE population * 1000 > 150000
 AND NOT nom_comm = 'TOULOUSE';
-
--- EXPLANATIONS:
---  - SQL Sub Query
---  - ST_Distance
 ```
+
+About the query :
+- SQL Sub Query
+- ST_Distance
