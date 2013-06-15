@@ -4,32 +4,32 @@
 Binary format
 -------------
 
+Retrieve geometry as stored in PostGIS
+
 ```SQL
-
--- Retrieve geometry as stored in PostGIS
-
 SELECT geom 
 FROM admin.commune
 LIMIT 10;
-
-
--- EXPLANATION: binary storage in hexadecimal format
 ```
+
+
+About the query :
+- binary storage in hexadecimal format
 
 Readable infos
 --------------
 
+Retrieve structure from some geometries
+
 ```SQL
--- Retrieve structure from few geometries
 
 SELECT ST_Summary(geom) 
 FROM admin.commune
 LIMIT 10;
-
-
--- TIPS: PGAdmin display not automatically
--- display multilines, use psql, copy-paste, or use strings functions
 ```
+
+TIP: 
+- PGAdmin does not display multilines, use psql, copy-paste, or use strings functions
 
 Display data
 ------------
@@ -42,7 +42,8 @@ FROM admin.commune
 LIMIT 10;
 ```
 
-*TIP* : PGAdmin display does not display anything if the data become quite big (use psql instead)
+TIP : 
+- PGAdmin display does not display anything if the data is too big (use psql instead)
 
 Access data
 -----------
@@ -68,7 +69,7 @@ SELECT ST_Summary(geom),
 FROM rhone;
 ```
 
-EXPLANATIONS:
+About the query :
 - What is SQL CTE
 - http://www.postgis.net/docs/manual-2.0/ST_Summary.html
 - http://www.postgis.net/docs/manual-2.0/ST_NumPoints.html
@@ -98,7 +99,7 @@ SELECT generate_series(1, ST_NumPoints(geom))
 FROM rhone;
 ```
 
-EXPLANATIONS:
+About the query :
 - generate_series loop
 - Same as previously but with the loop on each point
 
@@ -171,11 +172,11 @@ from (
 ) as coms;
 ```
 
-EXPLANATIONS:
+About the query :
 - http://www.postgis.net/docs/manual-2.0/ST_AsGeoJSON.html
 - number of decimal digit to use
 
-APPLICATION:
+Practice :
 - Test the result : http://geojsonlint.com/
 - Display it in OpenLayers demonstration GeoJSON input (link in ST_AsGeoJSON documentation page)
 - Display it on GitHub : https://github.com/vpicavet/geojson-samples/blob/master/rhone.geojson
