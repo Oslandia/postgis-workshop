@@ -95,7 +95,7 @@ WITH rhone AS
   FROM hydro.cours_eau 
   WHERE code_hydro = 'V---0000'  -- Hydrological code from Rhone river
 )
-SELECT generate_series(1, ST_NumPoints(geom))
+SELECT generate_series(1, ST_NumPoints(geom)) as n
 FROM rhone;
 ```
 
