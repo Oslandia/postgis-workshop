@@ -110,7 +110,7 @@ WHERE ST_Intersects(c.geom, ST_Buffer(t.geom, 50000));
 Last but not least, use _ST_Dwithin_ function :
 ```SQL
 select
-    *
+    t1.*
 from
     admin.commune as t1
 join
