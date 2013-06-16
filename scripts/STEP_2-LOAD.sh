@@ -1,7 +1,7 @@
 # Create all Schemas
-psql postgis -c "DROP SCHEMA if exists admin;"
-psql postgis -c "DROP SCHEMA if exists hydro;"
-psql postgis -c "DROP SCHEMA if exists rff;"
+psql postgis -c "DROP SCHEMA if exists admin CASCADE;"
+psql postgis -c "DROP SCHEMA if exists hydro CASCADE;"
+psql postgis -c "DROP SCHEMA if exists rff CASCADE;"
 psql postgis -c "CREATE SCHEMA admin"
 psql postgis -c "CREATE SCHEMA hydro"
 psql postgis -c "CREATE SCHEMA rff"
