@@ -15,6 +15,19 @@ Some useful links :
 Get started
 -----------
 
+First download the latest version of this workshop :
+
+https://codeload.github.com/vpicavet/postgis-workshop/zip/master
+
+Save to the home directory and unzip it to the _workshop_ directory.
+
+```bash
+$ cd
+$ sudo chown -R vagrant.vagrant /workshop
+$ unzip -o postgis-workshop-master -d workshop
+$ cd workshop/postgis-workshop-master
+```
+
 The first step is to initialize the database and load the data.
 
 Launch the two scripts in the _script_ directory to create the database and load the data.
@@ -32,5 +45,6 @@ $ sh STEP_2-LOAD.sh
 ```
 
 Now you can use pgAdmin3 to look at your data, and load it with QGIS.
+
 
 Try to do some nice symbology for the data in QGIS and proceed to next step.
