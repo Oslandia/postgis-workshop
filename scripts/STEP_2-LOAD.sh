@@ -9,6 +9,7 @@ psql postgis -c "CREATE SCHEMA rff"
 # Import Shapefile
 shp2pgsql -s 2154 -d -I -D -W LATIN1 ../../data/geofla_commune_l93/*.SHP admin.commune | psql postgis 
 shp2pgsql -s 2154 -d -I -D -W LATIN1 ../../data/carthage/COURS_D_EAU.SHP hydro.cours_eau | psql postgis
+shp2pgsql -s 2154 -d -I -D -W LATIN1 ../../data/carthage/REGION_HYDROGRAPHIQUE.SHP hydro.region | psql postgis
 
 
 # CSV data load
