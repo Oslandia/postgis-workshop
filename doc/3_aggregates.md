@@ -72,7 +72,9 @@ SELECT
    ST_Summary(ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), 2))) AS geom,
    ST_Summary(ST_CollectionExtract(ST_Collect(geom), 2)) AS geom 
 FROM hydro.cours_eau 
-WHERE code_hydro = 'V---0000';  -- Hydrological code from Rhone river
+WHERE code_hydro = 'V---0000'
+-- Hydrological code from Rhone river
+;
 ```
 
 Using _ST_LineMerge_ and view it through QGIS DBManager:
@@ -81,5 +83,7 @@ Using _ST_LineMerge_ and view it through QGIS DBManager:
 SELECT 1::integer AS gid,
       ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), 2)) AS geom
 FROM hydro.cours_eau 
-WHERE code_hydro = 'V---0000';  -- Hydrological code from Rhone river
+-- Hydrological code from Rhone river
+WHERE code_hydro = 'V---0000'
+;
 ```
