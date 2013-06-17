@@ -37,6 +37,9 @@ Adapt the scripts if your data is located at another location.
 To load the shapefiles, you can also use the _shp2pgsql-gui_ GUI tool.
 
 You can re-run those scripts if you screw up the database.
+```bash
+$ ln -s /workshop/data /home/vagrant/workshop
+```
 
 ```bash
 $ cd scripts
