@@ -72,7 +72,7 @@ SELECT
    ST_Summary(ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), 2))) AS geom,
    ST_Summary(ST_CollectionExtract(ST_Collect(geom), 2)) AS geom 
 FROM hydro.cours_eau 
-WHERE code_hydro = 'V---0000'
+WHERE code_hydro = 'V---0000';
 -- Hydrological code from Rhone river
 ;
 ```
@@ -84,6 +84,6 @@ SELECT 1::integer AS gid,
       ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), 2)) AS geom
 FROM hydro.cours_eau 
 -- Hydrological code from Rhone river
-WHERE code_hydro = 'V---0000'
+WHERE code_hydro = 'V---0000';
 ;
 ```

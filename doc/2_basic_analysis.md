@@ -6,7 +6,7 @@ Find populated cities
 
 ```SQL
 
--- Retrieve 100 top mostly populate city area
+-- Retrieve the 100 most dense cities.
 
 SELECT * 
 FROM admin.commune 
@@ -25,10 +25,10 @@ Retrieve all city located around a single one named Toulouse.
 
 ```SQL
 
-SELECT c.gid, c.geom, c.nom_comm  
+SELECT c.gid, c.geom, c.nom_com
 FROM admin.commune AS c
 WHERE ST_Touches( c.geom, 
-                  (SELECT geom FROM admin.commune WHERE nom_comm = 'TOULOUSE')
+                  (SELECT geom FROM admin.commune WHERE nom_com = 'TOULOUSE')
                 )
 ;
 ```
@@ -38,11 +38,11 @@ Practice :
 Longest rivers
 --------------
 
-Which rivers are the longests ?
+Which rivers are the longest ?
  
 ```SQL
 
-SELECT SUM(ST_Length(geom)), Toponyme
+SELECT SUM(ST_Length(geom)), toponyme
 FROM hydro.cours_eau
 WHERE toponyme IS NOT NULL
 GROUP BY toponyme
@@ -64,7 +64,7 @@ Buffers
 
 ```SQL
 
-SELECT ST_Buffer(geom, 10000) AS geom, gid from admin.commune where nom_comm = 'TOULOUSE';
+SELECT ST_Buffer(geom, 10000) AS geom, gid from admin.commune where nom_com = 'TOULOUSE';
 
 ```
 Make some more buffers around some cities. Then around the cities touching Toulouse.
@@ -72,16 +72,16 @@ Make some more buffers around some cities. Then around the cities touching Toulo
 Distances
 ---------
 
--- How far away are big city from Toulouse ?
+-- How far are big cities from Toulouse ?
 
 ```SQL
 
-SELECT nom_comm, 
+SELECT nom_com,
        population * 1000 AS population,
-       ST_Distance(geom, (SELECT geom FROM admin.commune WHERE nom_comm = 'TOULOUSE')) / 1000 AS dist_km
+       ST_Distance(geom, (SELECT geom FROM admin.commune WHERE nom_com = 'TOULOUSE')) / 1000 AS dist_km
 FROM admin.commune
 WHERE population * 1000 > 150000
-AND NOT nom_comm = 'TOULOUSE';
+AND NOT nom_com = 'TOULOUSE';
 ```
 
 About the query :

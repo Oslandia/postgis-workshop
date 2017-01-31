@@ -58,5 +58,5 @@ Check if Spatial Indexes were correctly created
 With PgAdmin or with psql and \di command
 
 About indexes : 
-- What is spatial index ?
-- What does it stand for ?
+- What is spatial index?
+- What does it stand for?
