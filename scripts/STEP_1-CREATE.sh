@@ -1,9 +1,5 @@
-#/bin/sh
-dropdb postgis
+#/bin/bash
+
+dropdb --if-exists postgis
 createdb postgis
-psql postgis < /usr/share/postgresql/9.1/contrib/postgis-2.0/postgis.sql
-psql postgis < /usr/share/postgresql/9.1/contrib/postgis-2.0/spatial_ref_sys.sql
-
-
-# Explanations:
-#  - New alternate syntax using EXTENSION
+psql -d postgis -c "create extension postgis"

@@ -41,7 +41,7 @@ Coordinates to geom
 Create a geometry from lat / lon text datas 
  
 ```SQL
-SELECT ST_SetSRID(ST_MakePoint(lon, lat), 4326) AS geom
+SELECT ST_SetSRID(ST_MakePoint(longitude_wgs84, latitude_wgs84), 4326) AS geom
 FROM rff.station;
 ```
 
@@ -49,7 +49,7 @@ Same one viewable in QGIS DBManager:
 
 ```SQL
 SELECT (row_number() OVER ()) AS gid,
-       ST_SetSRID(ST_MakePoint(lon, lat), 4326) AS geom
+       ST_SetSRID(ST_MakePoint(longitude_wgs84, latitude_wgs84), 4326) AS geom
 FROM rff.station;
 ```
 
