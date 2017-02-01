@@ -4,21 +4,22 @@
 Intersection
 ------------
 
-Retrieving all administrative area crossed by a single river, ordered from first to last
+Retrieving all the administrative areas crossed by a single river, ordered from first to last
 
 ```SQL
-WITH river AS 
+WITH river AS
 (
-  SELECT geom 
-  FROM hydro.cours_eau 
+  SELECT geom
+  FROM hydro.cours_eau
   WHERE code_hydro = 'V---0000'  -- Hydrological code from Rhone river
 )
 
 SELECT nom_com
-FROM admin.commune AS c, river AS r 
+FROM admin.commune AS c, river AS r
 WHERE ST_Intersects(c.geom, r.geom)
-ORDER BY ST_LineLocatePoint(ST_LineMerge(r.geom), 
-                              ST_ClosestPoint(r.geom, (c.geom)))
+ORDER BY ST_LineLocatePoint(
+    ST_LineMerge(r.geom),
+    ST_ClosestPoint(r.geom, c.geom))
 ;
 ```
 
@@ -43,10 +44,10 @@ Generalization
 Generalize data : simplification of geometries.
 
 ```SQL
-WITH river AS 
+WITH river AS
 (
-  SELECT ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), 2)) AS geom 
-  FROM hydro.cours_eau 
+  SELECT ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), 2)) AS geom
+  FROM hydro.cours_eau
   WHERE code_hydro = 'V---0000'  -- Hydrological code from Rhone river
 )
 
@@ -130,15 +131,15 @@ About the query :
 Nearest neighbors
 -----------------
 
-Big cities are generally located on big river. Find for each big city big the closest rivers
+Big cities are generally located on big rivers. Find for each big city big the closest rivers
 
 ```SQL
 SELECT c.nom_com,
-                c.population * 1000 AS population, 
-                r.toponyme, 
-                ST_Distance(r.geom, c.geom) AS dist
+       c.population * 1000 AS population,
+       r.toponyme,
+       ST_Distance(r.geom, c.geom) AS dist
 
-FROM admin.commune AS c, 
+FROM admin.commune AS c,
      hydro.cours_eau AS r
 
 WHERE r.classe = '1' -- big river only
@@ -148,8 +149,7 @@ AND   r.geom && ST_Expand(c.geom, 10000)
 ORDER BY r.geom <-> c.geom;
 ```
 
-
 About the query :
 - Bbox and geometry
 - Intesection operator &&
-- KNN operators <#> and <-> 
+- KNN operators <#> and <->
