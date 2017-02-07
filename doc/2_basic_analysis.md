@@ -77,10 +77,10 @@ Distances
 ```SQL
 
 SELECT nom_com,
-       population * 1000 AS population,
+       population AS population,
        ST_Distance(geom, (SELECT geom FROM admin.commune WHERE nom_com = 'TOULOUSE')) / 1000 AS dist_km
 FROM admin.commune
-WHERE population * 1000 > 150000
+WHERE population > 150000
 AND NOT nom_com = 'TOULOUSE';
 ```
 
