@@ -19,5 +19,5 @@ Ce workshop est hébergé sur Github : https://github.com/Oslandia/postgis-works
 Crédits à Oslandia : http://www.oslandia.com
 Merci de signaler toutes erreurs, ou d'aider à améliorer ce workshop. 
 
-Le workshop est sous license CC-By-SA.
+Le workshop est sous licence CC-By-SA.
 
