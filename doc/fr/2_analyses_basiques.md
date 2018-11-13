@@ -90,17 +90,6 @@ FROM admin.commune
 WHERE population > 150000
 AND NOT nom_com = 'TOULOUSE';
 
--- ou:
-
-WITH toulouse as (
-	SELECT geom FROM admin.commune WHERE nom_com = 'TOULOUSE'
-)
-SELECT nom_com,
-       population AS population,
-       ST_Distance(c.geom, t.geom) / 1000 AS dist_km
-FROM admin.commune c, toulouse t
-WHERE population > 150000
-AND NOT nom_com = 'TOULOUSE';
 ```
 
 A propos de la requête :
