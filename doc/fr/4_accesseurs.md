@@ -157,7 +157,7 @@ WITH rhone AS
 
 )
 
-SELECT ST_AsGeoJSON(ST_Transform(geom, 4326), 5) 
+SELECT substring(ST_AsGeoJSON(ST_Transform(geom, 4326), 5) from 1 for 300)
 FROM rhone;
 ```
 
