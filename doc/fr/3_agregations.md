@@ -81,7 +81,7 @@ SELECT
 FROM hydro.cours_eau 
 WHERE code_hydro = 'V---0000';
 -- Code Hydrologique du Rhone
-;
+
 ```
 
 Pour visualiser sous QGIS:
@@ -93,5 +93,4 @@ SELECT 1::integer AS gid,
 FROM hydro.cours_eau 
 -- Hydrological code from Rhone river
 WHERE code_hydro = 'V---0000';
-;
 ```
