@@ -1,12 +1,12 @@
 2 - Analyses basiques
 =====================
 
-Trouvons les villes populaires
-------------------------------
+Trouvons les communes populaires
+--------------------------------
 
 ```SQL
 
--- Récupérons les 100 villes les plus denses
+-- Récupérons les 100 communes les plus denses
 
 SELECT * 
 FROM admin.commune 
@@ -22,7 +22,7 @@ Exercice :
 Voisines de Toulouse
 --------------------
 
-Récupérons toutes les villes situées autours de celle nommée Toulouse
+Récupérons toutes les communes situées autours de celle nommée Toulouse
 
 ```SQL
 
@@ -73,13 +73,13 @@ SELECT ST_Buffer(geom, 10000) AS geom, gid from admin.commune where nom_com = 'T
 
 ```
 
-Faisons des buffers (zones tampons) autours des villes, puis autours des villes frontalières de Toulouse.
+Faisons des buffers (zones tampons) autours des communes, puis autours des communes frontalières de Toulouse.
 
 
 Distances
 ---------
 
--- Quelles sont les distances entre Toulouse et les autres grandes villes ?
+-- Quelles sont les distances entre Toulouse et les autres grandes communes ?
 
 ```SQL
 

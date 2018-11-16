@@ -136,8 +136,8 @@ A propos de la requête :
 Plus proches voisins
 --------------------
 
-Les grandes villes sont généralement situées le long des grands fleuves.
-Trouvons pour chaque grande ville la pllus proche rivière :
+Les grandes communes sont généralement situées le long des grands fleuves.
+Trouvons pour chaque grande commune la plus proche rivière :
 
 
 ```SQL
