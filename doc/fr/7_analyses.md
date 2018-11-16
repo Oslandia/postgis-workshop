@@ -153,7 +153,7 @@ WHERE r.classe = '1' -- uniquement les grandes rivières
 AND   r.toponyme IS NOT NULL
 AND   (c.population) > 200000
 AND   r.geom && ST_Expand(c.geom, 10000)
-ORDER BY r.geom <-> c.geom;
+ORDER BY r.geom <-> c.geom; -- distance
 ```
 
 A propos de la requête :
