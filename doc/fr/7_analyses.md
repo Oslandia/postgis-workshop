@@ -142,7 +142,7 @@ Trouvons pour chaque grande commune la plus proche rivière :
 
 ```SQL
 SELECT c.nom_com,
-       c.population * 1000 AS population,
+       c.population AS population,
        r.toponyme,
        ST_Distance(r.geom, c.geom) AS dist
 
@@ -151,7 +151,7 @@ FROM admin.commune AS c,
 
 WHERE r.classe = '1' -- uniquement les grandes rivières
 AND   r.toponyme IS NOT NULL
-AND   (c.population * 1000) > 100000
+AND   (c.population) > 200000
 AND   r.geom && ST_Expand(c.geom, 10000)
 ORDER BY r.geom <-> c.geom;
 ```
