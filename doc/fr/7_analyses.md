@@ -8,7 +8,7 @@ Récupérons toutes les communes traversées par une rivière, ordonnées de la 
 
 
 ```SQL
-WITH river AS
+WITH rhone AS
 (
   SELECT geom
   FROM hydro.cours_eau
@@ -16,7 +16,7 @@ WITH river AS
 )
 
 SELECT nom_com
-FROM admin.commune AS c, river AS r
+FROM admin.commune AS c, rhone AS r
 WHERE ST_Intersects(c.geom, r.geom)
 ORDER BY ST_LineLocatePoint(
     ST_LineMerge(r.geom),
@@ -45,7 +45,7 @@ Généralisation
 Généralisation de données : simplification de géométries :
 
 ```SQL
-WITH river AS
+WITH rhone AS
 (
   SELECT ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), 2)) AS geom
   FROM hydro.cours_eau
@@ -53,7 +53,7 @@ WITH river AS
 )
 
 SELECT 1::integer AS gid, ST_Simplify(geom, 250) AS geom
-FROM river;
+FROM rhone;
 ```
 
 Exercice :
