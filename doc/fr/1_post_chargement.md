@@ -50,7 +50,7 @@ NOTE : les données de type POINT sont toujours valides, la vérification est su
 A propos de la requête :
 
 - Qu'est-ce qu'une géométrie invalide ?
-- SpécificationsOGC SFS
+- Spécifications OGC SFS
 
 Vérifions les index
 --------------------

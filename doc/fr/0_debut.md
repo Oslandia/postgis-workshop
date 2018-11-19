@@ -24,7 +24,7 @@ Sauvegardez le zip dans votre répertoire home et décompressez le dans un répe
 
 ```bash
 $ cd ~
-$ wget -O postgis-workshop-master.zip 'https://codeload.github.com/vpicavet/postgis-workshop/zip/master'
+$ wget -O postgis-workshop-master.zip 'https://github.com/Oslandia/postgis-workshop/archive/master.zip'
 $ mkdir workshop
 $ unzip -o postgis-workshop-master.zip -d workshop
 $ cd workshop/postgis-workshop-master

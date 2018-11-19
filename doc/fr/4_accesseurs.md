@@ -79,7 +79,7 @@ A propos de la requête :
 Récupération de tous les points
 -------------------------------
 
-Si on veut récupérer tous les points du linéiare de la rivière, il faut utiliser une boucle
+Si on veut récupérer tous les points du linéaire de la rivière, il faut utiliser une boucle
 
 On va utiliser _generate_series(i, j)_ :
 
