@@ -1,5 +1,5 @@
 <div id="top"></div>
-<div class="fixed left">[Retour en haut](#top) / [Bonus](pgis1_bonus.html) </div>
+<div class="fixed left">[Retour en haut](#top)</div>
 <div class="fixed right">[www.oslandia.com](http://www.oslandia.com) </div>
 
 ![](./assets/img/oslandia_logo.png "Oslandia logo")
@@ -534,7 +534,7 @@ Vérifions si les index spatiaux ont été correctement créés, avec PGAdmin ou
 
 
 
-## Fonctionnalités
+## Les basiques
 
 ### Créer une géométrie
 

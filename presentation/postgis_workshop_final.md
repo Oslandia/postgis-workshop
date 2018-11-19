@@ -1,5 +1,5 @@
 <div id="top"></div>
-<div class="fixed left">[Retour en haut](#top) / [Bonus](pgis1_bonus.html) </div>
+<div class="fixed left">[Retour en haut](#top)</div>
 <div class="fixed right">[www.oslandia.com](http://www.oslandia.com) </div>
 
 ![](./assets/img/oslandia_logo.png "Oslandia logo")
@@ -51,7 +51,7 @@ Quelques liens utiles pour commencer:
 <div class="sommaire-2">[6.9 Courbe (curve)](#courbe-curve)</div>
 <div class="sommaire-2">[6.10 Validité des géométries](#validité-des-géométries)</div>
 <div class="sommaire-2">[6.11 Indexes](#indexes)</div>
-<div class="sommaire-1">[7 Fonctionnalités](#fonctionnalités)</div>
+<div class="sommaire-1">[7 Les basiques](#les-basiques)</div>
 <div class="sommaire-2">[7.1 Créer une géométrie](#créer-une-géométrie)</div>
 <div class="sommaire-2">[7.2 ST_AsText](#st_astext)</div>
 <div class="sommaire-2">[7.3 ST_Summary](#st_summary)</div>
@@ -587,7 +587,7 @@ Vérifions si les index spatiaux ont été correctement créés, avec PGAdmin ou
 
 
 
-## 7 Fonctionnalités
+## 7 Les basiques
 
 ### 7.1 Créer une géométrie
 
