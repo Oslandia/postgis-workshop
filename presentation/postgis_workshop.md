@@ -10,11 +10,11 @@ Bienvenue dans ce workshop PostGIS introduction (débutant). Vous y découvrirez
 
 Quelques liens utiles pour commencer:
 
-* Site PostGIS: http://www.postgis.net
-* Documentation PostGIS : http://www.postgis.net/documentation/
-* Documentation PostgreSQL : https://www.postgresql.org/docs/current/index.html
-* Ce workshop sur Github : https://github.com/Oslandia/postgis-workshop
-* Validation GeoJSON : http://geojsonlint.com/
+* Site PostGIS: [http://www.postgis.net](http://www.postgis.net)
+* Documentation PostGIS : [http://www.postgis.net/documentation/](http://www.postgis.net/documentation/)
+* Documentation PostgreSQL : [https://www.postgresql.org/docs/current/index.html](https://www.postgresql.org/docs/current/index.html)
+* Ce workshop sur Github : [https://github.com/Oslandia/postgis-workshop](https://github.com/Oslandia/postgis-workshop)
+* Validation GeoJSON : [http://geojsonlint.com/](http://geojsonlint.com/)
 
 
 ## Plan du workshop (indicatif)
