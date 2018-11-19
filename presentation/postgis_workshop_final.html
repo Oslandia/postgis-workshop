@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>postgis_workshop_final</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header>
+<h1 class="title">postgis_workshop_final</h1>
+</header>
+<div id="top">
+
+</div>
+<div class="fixed left">
+<a href="#top">Retour en haut</a> / <a href="pgis1_bonus.html">Bonus</a>
+</div>
+<div class="fixed right">
+<a href="http://www.oslandia.com">www.oslandia.com</a>
+</div>
+<p><img src="./assets/img/oslandia_logo.png" title="Oslandia logo" /></p>
+<h1 id="postgis---introduction">PostGIS - Introduction</h1>
+<p>Bienvenue dans ce workshop PostGIS introduction (débutant). Vous y découvrirez cette extension spatiale de PostgreSQL au travers de quelques exercices et cas pratiques.</p>
+<p>Quelques liens utiles pour commencer:</p>
+<ul>
+<li>Site PostGIS: http://www.postgis.net</li>
+<li>Documentation PostGIS : http://www.postgis.net/documentation/</li>
+<li>Documentation PostgreSQL : https://www.postgresql.org/docs/current/index.html</li>
+<li>Ce workshop sur Github : https://github.com/Oslandia/postgis-workshop</li>
+<li>Validation GeoJSON : http://geojsonlint.com/</li>
+</ul>
+<h2 id="plan-du-workshop-indicatif">1 Plan du workshop (indicatif)</h2>
+<div class="sommaire-1">
+<a href="#plan-du-workshop-indicatif">1 Plan du workshop (indicatif)</a>
+</div>
+<div class="sommaire-1">
+<a href="#pour-bien-commencer">2 Pour bien commencer</a>
+</div>
+<div class="sommaire-2">
+<a href="#postgis-quest-ce-que-cest">2.1 PostGIS, qu’est-ce que c’est ?</a>
+</div>
+<div class="sommaire-1">
+<a href="#postgis-introduction">3 PostGIS: introduction</a>
+</div>
+<div class="sommaire-2">
+<a href="#standards">3.1 Standards</a>
+</div>
+<div class="sommaire-2">
+<a href="#architecture">3.2 Architecture</a>
+</div>
+<div class="sommaire-2">
+<a href="#histoire">3.3 Histoire</a>
+</div>
+<div class="sommaire-2">
+<a href="#communauté">3.4 Communauté</a>
+</div>
+<div class="sommaire-2">
+<a href="#commiters-postgis">3.5 Commiters PostGIS</a>
+</div>
+<div class="sommaire-2">
+<a href="#comparaison-avec-dautres-sgbd-spatiaux">3.6 Comparaison avec d’autres SGBD spatiaux</a>
+</div>
+<div class="sommaire-2">
+<a href="#sites-de-références">3.7 Sites de références</a>
+</div>
+<div class="sommaire-2">
+<a href="#documentation">3.8 Documentation</a>
+</div>
+<div class="sommaire-2">
+<a href="#cheatsheets">3.9 CheatSheets</a>
+</div>
+<div class="sommaire-1">
+<a href="#les-outils">4 Les outils</a>
+</div>
+<div class="sommaire-2">
+<a href="#psql">4.1 PSQL</a>
+</div>
+<div class="sommaire-2">
+<a href="#pgadmin">4.2 PGAdmin</a>
+</div>
+<div class="sommaire-2">
+<a href="#qgis">4.3 QGIS</a>
+</div>
+<div class="sommaire-1">
+<a href="#premiers-pas">5 Premiers pas</a>
+</div>
+<div class="sommaire-2">
+<a href="#créer-une-nouvelle-base">5.1 Créer une nouvelle base</a>
+</div>
+<div class="sommaire-2">
+<a href="#chargement-de-postgis">5.2 Chargement de PostGIS</a>
+</div>
+<div class="sommaire-1">
+<a href="#les-géométries">6 Les géométries</a>
+</div>
+<div class="sommaire-2">
+<a href="#wkt">6.1 WKT</a>
+</div>
+<div class="sommaire-2">
+<a href="#wkb">6.2 WKB</a>
+</div>
+<div class="sommaire-2">
+<a href="#dimensions">6.3 Dimensions</a>
+</div>
+<div class="sommaire-2">
+<a href="#projection">6.4 Projection</a>
+</div>
+<div class="sommaire-2">
+<a href="#point-point">6.5 Point (Point)</a>
+</div>
+<div class="sommaire-2">
+<a href="#ligne-linestring">6.6 Ligne (LineString)</a>
+</div>
+<div class="sommaire-2">
+<a href="#polygone-polygon">6.7 Polygone (Polygon)</a>
+</div>
+<div class="sommaire-2">
+<a href="#types-multiples-et-aggrégats">6.8 Types multiples et aggrégats</a>
+</div>
+<div class="sommaire-2">
+<a href="#courbe-curve">6.9 Courbe (curve)</a>
+</div>
+<div class="sommaire-2">
+<a href="#validité-des-géométries">6.10 Validité des géométries</a>
+</div>
+<div class="sommaire-2">
+<a href="#indexes">6.11 Indexes</a>
+</div>
+<div class="sommaire-1">
+<a href="#fonctionnalités">7 Fonctionnalités</a>
+</div>
+<div class="sommaire-2">
+<a href="#créer-une-géométrie">7.1 Créer une géométrie</a>
+</div>
+<div class="sommaire-2">
+<a href="#st_astext">7.2 ST_AsText</a>
+</div>
+<div class="sommaire-2">
+<a href="#st_summary">7.3 ST_Summary</a>
+</div>
+<div class="sommaire-1">
+<a href="#analyses-basiques">8 Analyses basiques</a>
+</div>
+<div class="sommaire-2">
+<a href="#st_area">8.1 ST_Area</a>
+</div>
+<div class="sommaire-2">
+<a href="#st_touches">8.2 ST_Touches</a>
+</div>
+<div class="sommaire-2">
+<a href="#st_length">8.3 ST_Length</a>
+</div>
+<div class="sommaire-2">
+<a href="#st_buffer">8.4 ST_Buffer</a>
+</div>
+<div class="sommaire-2">
+<a href="#st_distance">8.5 ST_Distance</a>
+</div>
+<div class="sommaire-1">
+<a href="#aggrégations">9 Aggrégations</a>
+</div>
+<div class="sommaire-2">
+<a href="#st_union-aggrégation">9.1 ST_Union (aggrégation)</a>
+</div>
+<div class="sommaire-2">
+<a href="#st_collect">9.2 ST_Collect</a>
+</div>
+<div class="sommaire-2">
+<a href="#dautres-fonction-de-collecte">9.3 D’autres fonction de collecte</a>
+</div>
+<div class="sommaire-2">
+<a href="#fusion-de-lignes">9.4 Fusion de lignes</a>
+</div>
+<div class="sommaire-1">
+<a href="#accesseurs">10 Accesseurs</a>
+</div>
+<div class="sommaire-1">
+<a href="#type-geography">11 Type Geography</a>
+</div>
+<div class="sommaire-1">
+<a href="#analyses">12 Analyses</a>
+</div>
+<div class="sommaire-2">
+<a href="#st_intersects-intersections-de-géométries">12.1 ST_Intersects (intersections de géométries)</a>
+</div>
+<div class="sommaire-2">
+<a href="#généralisation">12.2 Généralisation</a>
+</div>
+<div class="sommaire-2">
+<a href="#recherche-par-buffer">12.3 Recherche par buffer</a>
+</div>
+<div class="sommaire-2">
+<a href="#plus-proches-voisins">12.4 Plus proches voisins</a>
+</div>
+<div class="sommaire-2">
+<a href="#référencement-linéaire">12.5 Référencement linéaire</a>
+</div>
+<h2 id="pour-bien-commencer">2 Pour bien commencer</h2>
+<p>Commencez par télécharger la dernière version de ce workshop :</p>
+<p>https://github.com/Oslandia/postgis-workshop/archive/master.zip</p>
+<p>Sauvegardez le zip dans votre répertoire home et décompressez le dans un répertoire <em>workshop</em>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1">$ <span class="bu">cd</span> ~</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">$ <span class="fu">wget</span> -O postgis-workshop-master.zip <span class="st">&#39;https://github.com/Oslandia/postgis-workshop/archive/master.zip&#39;</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">$ <span class="fu">mkdir</span> workshop</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">$ <span class="fu">unzip</span> -o postgis-workshop-master.zip -d workshop</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">$ <span class="bu">cd</span> workshop/postgis-workshop-master</a></code></pre></div>
+<p>La première étape est de créer la base de données et de charger les données</p>
+<p>Lancez les 3 scripts contenus dans le répertoire <em>scripts</em> pour créer la base, télécharger le jeu de test, et charger les données dans la base.</p>
+<p>Pour charger les shapefiles, vous pouvez aussi utiliser l’utilitaire <em>shp2pgsql-gui</em>.</p>
+<p>Vous pouvez relancer les scripts si une erreur se produit pendant l’exécution.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1">$ <span class="bu">cd</span> scripts</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">$ <span class="fu">sudo</span> -u postgres bash STEP_1-CREATE.sh</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">$ <span class="fu">bash</span> STEP_2-DOWNLOAD-DATA.sh</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">$ <span class="fu">sudo</span> -u postgres bash STEP_3-LOAD.sh</a></code></pre></div>
+<p>A présent, vous pouvez utiliser PGAdmin3 (ou 4) pour parcourir vos données et QGIS pour les visualiser.</p>
+<p>Essayez d’appliquer une belle symbologie pour les couches de données dans QGIS, et vous pourrez passer à l’étape suivante.</p>
+<h3 id="postgis-quest-ce-que-cest">2.1 PostGIS, qu’est-ce que c’est ?</h3>
+<p>PostGIS est une extension du SGBD PostgreSQL. Elle permet de manipuler des données spatiales (géographique) en respectant les standards de l’OGC (Open Geospatial Consortium).</p>
+<p>Elle apporte :</p>
+<ul>
+<li>des types de données (geometry, geography…)</li>
+<li>des fonctions de manipulation de donnée (géométrique)</li>
+<li>des tables et vues nécessaires au bon fonctionnement de PostGIS</li>
+</ul>
+<h4 id="installation-de-postgis-sous-linux">Installation de PostGIS sous linux</h4>
+<p>Dans un environnement Linux, l’installation est très facile. Il suffit d’installer les paquets disponibles pour votre distribution. Exemple sous Ubuntu :</p>
+<pre><code>sudo apt-get install postgresql-10-postgis-2.4</code></pre>
+<p>A l’issue de l’installation, un serveur PostgreSQL tournera sur votre machine et PostGIS sera disponible. Un utilisateur système <strong>postgres</strong> sera également disponible et vous permettra d’effectuer des opération d’administration sur votre serveur PostgreSQL.</p>
+<p>Exemple:</p>
+<pre><code>-- on se loggue en utilisateur postgres
+sudo su - postgres
+
+-- on crée une base de données
+createdb test</code></pre>
+<blockquote>
+<p>Rappel: PostgreSQL est un serveur de base de données, il est installé sur une machine et agit comme un service, attendant des requêtes qui lui sont envoyées.</p>
+</blockquote>
+<h4 id="installation-de-postgis-sous-windows">Installation de PostGIS sous windows</h4>
+<p>Sous Windows, EnterpriseDB fournit un <a href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads">binaire</a>. Le programme vous invite à installer PostgreSQL. A l’issue de l’installation, un programme annexe vous proposera d’installer des logiciels tierces. Vous y choisirez PostGIS. Suivez les étapes d’installations. Si tout se passe bien, vous devriez voir apparaître un nouveau service postgresql.</p>
+<blockquote>
+<p>Note: sous windows, il sera nécessaire de saisir un mot de passe pour l’utilisateur système postgres (ce n’est pas le cas sous linux)</p>
+</blockquote>
+<h2 id="postgis-introduction">3 PostGIS: introduction</h2>
+<h3 id="standards">3.1 Standards</h3>
+<p><a href="http://www.opengeospatial.org/standards/sfa">OGC Simple Feature Access (1.2.1) (ISO 19125)</a></p>
+<p>ISO SQL/MM Part 3 (ISO 13249)</p>
+<p>Ce qui est spécifié :</p>
+<ul>
+<li>types de géométries</li>
+<li>prototypes de fonctions</li>
+<li>tables additionnelles pour intégrité référentielle</li>
+</ul>
+<h3 id="architecture">3.2 Architecture</h3>
+<p>PostGIS peut être considéré comme un plugin de PostgreSQL. Cette extension est écrite principalement en langage C. Elle fait appel a des librairies tierces :</p>
+<figure>
+<img src="./assets/img/architecture.png" title="Architecture" alt="Architecture de PostGIS" /><figcaption>Architecture de PostGIS</figcaption>
+</figure>
+<p>PostGIS implémente OGC SFS et une grande partie de ISO SQL/MM. PostGIS offre en plus de nombreuses fonctions additionnelles.</p>
+<h3 id="histoire">3.3 Histoire</h3>
+<ul>
+<li>2001 Première version alpha</li>
+<li>2003 Version 0.8 – Utilisation en production</li>
+<li>2005 Version 1.0 – Réécriture du coeur et LWGEOM (OGC SFS 1.1)</li>
+<li>2006 Version 1.2 – Cap sur ISO SQL/MM (Curves, préfixes ST_…)</li>
+<li>2009 Version 1.4 – Création d’un PSC et entrée OSGeo</li>
+<li>2010 Version 1.5</li>
+<li>2012 Version 2.0 – Support Tin et Polyhedral (3D), Raster</li>
+<li>2013 Version 2.1</li>
+<li>2015 Version 2.2 – recherche plus proche voisin, TWKB…)</li>
+<li>2016 Version 2.3 – Pour PG 9.6 (début de support parallélisme index scan)</li>
+<li>2017 Version 2.4 – Support pour PG 10 (parallélisme aggrégations , Vector Tiles Mapbox</li>
+<li>2018 Version 2.5</li>
+</ul>
+<h3 id="communauté">3.4 Communauté</h3>
+<ul>
+<li>Institutionnels
+<ul>
+<li>IGN : Institut Géographique National</li>
+<li>IRSN : Institut de Radioprotection et de Sûreté Nucléaire</li>
+<li>JRC : Joint Research Center – Union Européenne</li>
+<li>BRGM : Bureau de Recherches Géologiques et Minières</li>
+<li>… et un directive ministérielle préconisant son utilisation</li>
+</ul></li>
+<li>Entreprises françaises
+<ul>
+<li>Mediapost, France Telecom, Veolia, RFF, MeteoFrance, Mappy, MichelinTP …</li>
+</ul></li>
+<li>Communauté
+<ul>
+<li>Mondiale</li>
+<li>Plusieurs milliers d’utilisateurs</li>
+<li>Mailing-list postgis-users très active</li>
+</ul></li>
+</ul>
+<h3 id="commiters-postgis">3.5 Commiters PostGIS</h3>
+<ul>
+<li>CadCorp</li>
+<li>LisaSoft</li>
+<li>OpenGeo</li>
+<li>Oslandia</li>
+<li>Paragon Corporation</li>
+<li>Refractions Research</li>
+<li>Sandro Santilli</li>
+<li>Sirius</li>
+</ul>
+<h3 id="comparaison-avec-dautres-sgbd-spatiaux">3.6 Comparaison avec d’autres SGBD spatiaux</h3>
+<ul>
+<li>Oracle Spatial (et Locator)</li>
+<li>ESRI ArcSDE</li>
+<li>IBM DB2</li>
+<li>Microsoft SQLServer 2008</li>
+<li>SpatiaLite</li>
+</ul>
+<h3 id="sites-de-références">3.7 Sites de références</h3>
+<ul>
+<li><a href="https://postgis.net/" class="uri">https://postgis.net/</a></li>
+</ul>
+<h3 id="documentation">3.8 Documentation</h3>
+<ul>
+<li><a href="https://postgis.net/documentation/" class="uri">https://postgis.net/documentation/</a></li>
+</ul>
+<blockquote>
+<p>L’utilisation de la documentation au format PDF est très pratique car elle permet la recherche rapide de texte.</p>
+</blockquote>
+<h3 id="cheatsheets">3.9 CheatSheets</h3>
+<p>Un bon résumé (quoiqu’un peu ancien) des fonctions proposées par PostGIS :</p>
+<ul>
+<li><a href="http://www.postgis.us/downloads/postgis21_cheatsheet.pdf" class="uri">http://www.postgis.us/downloads/postgis21_cheatsheet.pdf</a></li>
+</ul>
+<p>Vous pouvez rapidement identifier les fonctions qui vous serviront au quotidien.</p>
+<h2 id="les-outils">4 Les outils</h2>
+<h3 id="psql">4.1 PSQL</h3>
+<p>Cet utilitaire fait partie de PostgreSQL (il est installé par défaut avec PostgreSQL). Il fonctionne en ligne de commande et permet d’intéragir de manière complète sur une base PostgreSQL. Il peut être utilisé aussi depuis un serveur distant en SSH.</p>
+<pre><code>psql [OPTIONS]... [NOM_BASE [NOM_USER]]</code></pre>
+<p>Exemples:</p>
+<pre><code>psql -U NOM_USER NOM_BASE
+
+psql -h 127.0.0.1 -U NOM_USER -d NOM_BASE -p 5432
+
+Lister les bases existante
+Via la commande psql:
+psql -l
+
+En mode interactif:
+\l
+
+Changer de base (en mode interactif):
+\c NOM_BASE
+
+Lister les tables, séquences, index ou vue de la base courante:
+\d
+Lister les tables d&#39;un schéma:
+\dt
+\d NOM_SCHEMA.*
+Lister la structure d&#39;une table
+\d NOM_TABLE
+\d NOM_SCHEMA.NOM_TABLE</code></pre>
+<p>Via un shell (terminal) :</p>
+<pre><code>Exécuter une commande SQL directement :
+
+psql -d NOM_BASE -c &quot;SELECT * FROM my_table&quot;
+
+Exécuter un fichier contenant des commandes :
+
+psql -d NOM_BASE &lt; sql_file.sql</code></pre>
+<blockquote>
+<p>Attention à 1) Se croire (à tort) dans un shell et lancer des commandes système 2) L’inverse du précédent 3) Faire un SELECT, sans utiliser LIMIT sur une grosse table (interrompre avec Ctrl+C (voire Ctrl+Z)) 4) Oublier le « ; » final dans une commande SQL (et ne pas comprendre pourquoi la requête ne s’exécute pas) 5) Corollaire: ne pas respecter les fermetures de parenthèses ou guillemets</p>
+</blockquote>
+<h3 id="pgadmin">4.2 PGAdmin</h3>
+<p>PGAdmin est un client graphique pour administrer et requêter vos bases PostgreSQL.</p>
+<figure>
+<img src="./assets/img/pgadmin3.png" title="PGadmin" alt="PGAdmin" /><figcaption>PGAdmin</figcaption>
+</figure>
+<h3 id="qgis">4.3 QGIS</h3>
+<p>QGIS est un logiciel SIG bureautique. Leader des logiciel SIG OpenSource, très utilisé et bénéficiant d’une grande communauté. Nous allons nous en servir tout au long de la formation pour visualiser nos données.</p>
+<p>Il est par exemple possible d’importer des fichier SHP depuis QGIS vers une base PostGIS :</p>
+<ul>
+<li><ol type="1">
+<li>Charger la couche sous QGIS</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>Régler l’encodage si besoin</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li>Créer la connexion à la base de données PostGIS</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li>“Importer une couche vecteur” depuis DB manager</li>
+</ol></li>
+</ul>
+<figure>
+<img src="./assets/img/qgis_load_data.png" title="Qgis load" alt="Chargement de données via QGis" /><figcaption>Chargement de données via QGis</figcaption>
+</figure>
+<h2 id="premiers-pas">5 Premiers pas</h2>
+<h3 id="créer-une-nouvelle-base">5.1 Créer une nouvelle base</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">create</span> <span class="kw">database</span> formation;</a></code></pre></div>
+<h3 id="chargement-de-postgis">5.2 Chargement de PostGIS</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">create</span> extension postgis;</a></code></pre></div>
+<p>Cette commande charge PostGIS sur la base courante et ajoute:</p>
+<ul>
+<li>Types géométriques PostGIS</li>
+<li>Prototypes des fonctions et opérateurs C PostGIS</li>
+<li>Fonctions Pl/PgSQL PostGIS</li>
+</ul>
+<p>Elle ajoute également une table dans le schéma public:</p>
+<ul>
+<li>spatial_ref_sys: catalogue des systèmes de projection</li>
+</ul>
+<figure>
+<img src="./assets/img/spatial_ref_sys.png" title="spatial_ref_sys" alt="Table spatial_ref_sys" /><figcaption>Table spatial_ref_sys</figcaption>
+</figure>
+<p>et 4 vues:</p>
+<ul>
+<li>geometry_columns</li>
+<li>geography_colums</li>
+<li>raster_columns</li>
+<li>raster_overviews</li>
+</ul>
+<p>Ces vues référencent les objets de la base qui possèdent des caractéristiques spatiales.</p>
+<p>Pour vérifier quelle version de PostGIS est installée sur une base :</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb10-1" data-line-number="1"> <span class="kw">select</span> postgis_full_version();</a></code></pre></div>
+<p>Vérifions que les metadonnées sont correctement paramétrées</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb11-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">select</span> * <span class="kw">from</span> geometry_columns;</a></code></pre></div>
+<h2 id="les-géométries">6 Les géométries</h2>
+<h3 id="wkt">6.1 WKT</h3>
+<p>Le format WKT (Well Known Text) est une représentation textuelle de géométries.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb12-1" data-line-number="1">POINT(<span class="dv">10</span> <span class="dv">10</span>)</a></code></pre></div>
+<h3 id="wkb">6.2 WKB</h3>
+<p>Le format Geometry (ou HEWKB) est une représentation binaire avec encodage hexa de géométries.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="dv">01010</span>...54D3A5F</a></code></pre></div>
+<h3 id="dimensions">6.3 Dimensions</h3>
+<p>PostGIS sait gérer des données dans diverses dimensions: 2D, 3D, ou 4D.</p>
+<h3 id="projection">6.4 Projection</h3>
+<p>PostGIS gère les projections de données. La table spatial_ref_sys contient toutes les définitions de projection dont vous pourrez avoir besoin. Si un système n’est pas présent dans cette table, vous pouvez tout à fait le rajouter.</p>
+<p>Les projections ont toutes un identifiant appelé SRID.</p>
+<p>PostGIS ne fera jamais implicitement de transformation de projection. Il est de votre responsabilité de savoir dans quelle projection sont vos données. Ainsi il est tout à fait possible d’insérer en base des données avec une mauvaise projection. PostGIS n’en n’aura pas connaissance et prendra comme acquise l’information que vous lui donner.</p>
+<h3 id="point-point">6.5 Point (Point)</h3>
+<p>Représentation WKT :</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb14-1" data-line-number="1">POINT(<span class="dv">10</span> <span class="dv">10</span>)</a></code></pre></div>
+<figure>
+<img src="./assets/img/points.png" title="Points" alt="Points" /><figcaption>Points</figcaption>
+</figure>
+<h3 id="ligne-linestring">6.6 Ligne (LineString)</h3>
+<p>Représentation WKT :</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb15-1" data-line-number="1">LINESTRING</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="dv">0</span> <span class="dv">5</span>, <span class="dv">5</span> <span class="dv">1</span>, <span class="dv">9</span> <span class="dv">4</span>, <span class="dv">2</span> <span class="dv">14</span>, <span class="dv">14</span> <span class="dv">13</span>, <span class="dv">4</span> <span class="dv">4</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">)</a></code></pre></div>
+<figure>
+<img src="./assets/img/lines.png" title="Lines" alt="Lines" /><figcaption>Lines</figcaption>
+</figure>
+<h3 id="polygone-polygon">6.7 Polygone (Polygon)</h3>
+<p>Représentation WKT :</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb16-1" data-line-number="1">POLYGON</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">(<span class="dv">9</span> <span class="dv">13</span>,<span class="dv">13</span> <span class="dv">9</span>,<span class="dv">13</span> <span class="dv">3</span>,<span class="dv">4</span> <span class="dv">2</span>,<span class="dv">1</span> <span class="dv">4</span>,<span class="dv">1</span> <span class="dv">12</span>, <span class="dv">9</span> <span class="dv">13</span>),</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">(<span class="dv">5</span> <span class="dv">11</span>,<span class="dv">5</span> <span class="dv">6</span>,<span class="dv">1</span> <span class="dv">9</span>,<span class="dv">5</span> <span class="dv">11</span>),</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">(<span class="dv">10</span> <span class="dv">7</span>, <span class="dv">10</span> <span class="dv">4</span>, <span class="dv">6</span> <span class="dv">4</span>, <span class="dv">8</span> <span class="dv">8</span>, <span class="dv">10</span> <span class="dv">7</span>)</a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">)</a></code></pre></div>
+<ul>
+<li>Le premier ring (obligatoire) correspond au ring externe</li>
+<li>Les coordonnées des rings sont fermantes</li>
+<li>Les rings suivants (optionels) correspondent à des ‘trous’</li>
+</ul>
+<p>Les polygones peuvent être invalides (au sens OGC SFS) (ce n’est pas le cas des points et lignes qui sont toujours valides). D’un point de vue technique PostGIS acceptera de les enregistrer en base, par contre le résultat de fonctions spatiales sur des géométries invalides est incertain.</p>
+<figure>
+<img src="./assets/img/polygons.png" title="Polygons" alt="Polygons" /><figcaption>Polygons</figcaption>
+</figure>
+<h3 id="types-multiples-et-aggrégats">6.8 Types multiples et aggrégats</h3>
+<p>Il existe des types multiples :</p>
+<ul>
+<li>MULTIPOINT</li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb17-1" data-line-number="1">MULTIPOINT ((<span class="dv">10</span> <span class="dv">40</span>), (<span class="dv">40</span> <span class="dv">30</span>), (<span class="dv">20</span> <span class="dv">20</span>), (<span class="dv">30</span> <span class="dv">10</span>))</a></code></pre></div>
+<ul>
+<li>MULTILINESTRING</li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb18-1" data-line-number="1">MULTILINESTRING ((<span class="dv">10</span> <span class="dv">10</span>, <span class="dv">20</span> <span class="dv">20</span>, <span class="dv">10</span> <span class="dv">40</span>),</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">(<span class="dv">40</span> <span class="dv">40</span>, <span class="dv">30</span> <span class="dv">30</span>, <span class="dv">40</span> <span class="dv">20</span>, <span class="dv">30</span> <span class="dv">10</span>))</a></code></pre></div>
+<ul>
+<li>MULTIPOLYGON</li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb19-1" data-line-number="1">MULTIPOLYGON (((<span class="dv">30</span> <span class="dv">20</span>, <span class="dv">45</span> <span class="dv">40</span>, <span class="dv">10</span> <span class="dv">40</span>, <span class="dv">30</span> <span class="dv">20</span>)),</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">((<span class="dv">15</span> <span class="dv">5</span>, <span class="dv">40</span> <span class="dv">10</span>, <span class="dv">10</span> <span class="dv">20</span>, <span class="dv">5</span> <span class="dv">10</span>, <span class="dv">15</span> <span class="dv">5</span>)))</a></code></pre></div>
+<ul>
+<li>GEOMETRYCOLLECTION</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb20-1" data-line-number="1">GEOMETRYCOLLECTION(POINT(<span class="dv">2</span> <span class="dv">0</span>), POLYGON((<span class="dv">0</span> <span class="dv">0</span>, <span class="dv">1</span> <span class="dv">0</span>, <span class="dv">1</span> <span class="dv">1</span>, <span class="dv">0</span> <span class="dv">1</span>, <span class="dv">0</span> <span class="dv">0</span>))</a></code></pre></div>
+<h3 id="courbe-curve">6.9 Courbe (curve)</h3>
+<p>Les types dits «curves» :</p>
+<ul>
+<li>CIRCULARSTRING</li>
+<li>COMPOUNDCURVE</li>
+<li>MULTISURFACE</li>
+</ul>
+<h3 id="validité-des-géométries">6.10 Validité des géométries</h3>
+<p>Les points sont toujours valides, ainsi que les linestring. Pour les polygones, il y a plusieurs cas.</p>
+<figure>
+<img src="./assets/img/validity.png" title="Polygons" alt="Polygons" /><figcaption>Polygons</figcaption>
+</figure>
+<p>Vérifions si le jeu de données contient des géométrie invalides</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb21-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">SELECT</span> gid, ST_IsValidReason(geom) </a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="kw">FROM</span> hydro.region </a>
+<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="kw">WHERE</span> <span class="kw">NOT</span> ST_IsValid(geom);</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="kw">SELECT</span> gid, ST_IsValidReason(geom) </a>
+<a class="sourceLine" id="cb21-7" data-line-number="7"><span class="kw">FROM</span> admin.commune </a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="kw">WHERE</span> <span class="kw">NOT</span> ST_IsValid(geom);</a></code></pre></div>
+<p>NOTE : les données de type POINT sont toujours valides, la vérification est surtout faite pour les données surfaciques.</p>
+<p>A propos de la requête :</p>
+<ul>
+<li>Qu’est-ce qu’une géométrie invalide ?</li>
+<li>Spécifications OGC SFS</li>
+</ul>
+<h3 id="indexes">6.11 Indexes</h3>
+<p>Améliorer les performances sur filtrage. Approxime les géométries (Stockage de la Bbox de la géométrie dans l’index).</p>
+<p>Ils fonctionnent comme des index classiques.</p>
+<p>Permettent d’accélérer les requêtes sur des SELECT avec une clause WHERE basée sur des données spatiales.</p>
+<p>Ils ralentissent de fait les tâches d’écriture en base (INSERT / UPDATE).</p>
+<p>Ils utilisent le mécanisme GiST (Generalized Search Tree) de PostgreSQL.</p>
+<p>Création d’un index spatial:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">CREATE</span> <span class="kw">INDEX</span> index_name <span class="kw">ON</span> table_name</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="kw">USING</span> GIST(geom_column_name);</a></code></pre></div>
+<figure>
+<img src="./assets/img/index_principe2.png" title="Index" alt="Fonctionnement d’un index spatial" /><figcaption>Fonctionnement d’un index spatial</figcaption>
+</figure>
+<p>Regroupement des Bbox dans des régions de l’index.</p>
+<p>Le gain sur l’exécution de requête peut-être très important. La gestion des index est un sujet important lorsqu’on construit une base de données spatiale.</p>
+<p>Une règle simple veut que l’on positionne des indexes sur tous les champs présents dans les filtres des requêtes (derrière le <strong>where</strong>).</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co">-- La requête suivante est plus ou moins performante si des indexes sont présents sur la table des communes</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="kw">SELECT</span> </a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">    c1.nom </a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="kw">FROM</span> </a>
+<a class="sourceLine" id="cb23-6" data-line-number="6">    communes c1, communes c2 </a>
+<a class="sourceLine" id="cb23-7" data-line-number="7"><span class="kw">WHERE</span> </a>
+<a class="sourceLine" id="cb23-8" data-line-number="8">    c2.nom = <span class="st">&#39;Toulouse&#39;</span> </a>
+<a class="sourceLine" id="cb23-9" data-line-number="9">    <span class="kw">AND</span> ST_Touches(c1.the_geom, c2.the_geom);</a>
+<a class="sourceLine" id="cb23-10" data-line-number="10">    </a></code></pre></div>
+<p>Vérifions si les index spatiaux ont été correctement créés, avec PGAdmin ou psql (commande ).</p>
+<h2 id="fonctionnalités">7 Fonctionnalités</h2>
+<h3 id="créer-une-géométrie">7.1 Créer une géométrie</h3>
+<p>La fonction <a href="https://postgis.net/docs/ST_GeometryFromText.html">ST_GeometryFromText</a> permet de créer une géométrie à partir d’une définition WKT. Il est nécessaire de préciser la projection des données que le souhaite convertir.</p>
+<p><a href="https://postgis.net/docs/ST_GeomFromText.html">ST_GeomFromText</a> est une variante de ST_GeometryFromText.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">select</span> ST_GeometryFromText(<span class="st">&#39;POINT(454877 6902550)&#39;</span>, <span class="dv">2154</span>);</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3">Note : <span class="kw">on</span> peut remplacer ST_GeometryFromText(...) par : <span class="st">&#39;SRID=2154;POINT(454877 6902550)&#39;</span>:<span class="ch">:geometry</span></a></code></pre></div>
+<p>Quelques exemples :</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb25-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="co">-- Créons une géométrie à l&#39;aide d&#39;un CAST :</span></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="kw">SELECT</span> ST_AsText(<span class="st">&#39;POINT(10 10)&#39;</span>:<span class="ch">:geometry</span>);</a>
+<a class="sourceLine" id="cb25-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="co">-- Idem que précédement mais en incluant le SRID :</span></a>
+<a class="sourceLine" id="cb25-6" data-line-number="6"><span class="kw">SELECT</span> ST_AsEWKT(<span class="st">&#39;SRID=4326;POINT(10 10)&#39;</span>:<span class="ch">:geometry</span>);</a>
+<a class="sourceLine" id="cb25-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb25-8" data-line-number="8"><span class="co">-- autre façon :</span></a>
+<a class="sourceLine" id="cb25-9" data-line-number="9"><span class="kw">SELECT</span> ST_AsEWKT(ST_SetSRID(<span class="st">&#39;POINT(10 10)&#39;</span>:<span class="ch">:geometry</span>, <span class="dv">4326</span>));</a></code></pre></div>
+<p><a href="https://postgis.net/docs/ST_SRID.html">ST_SRID</a> retourne le SRID d’une géométrie.</p>
+<p><a href="https://postgis.net/docs/ST_SetSRID.html">ST_SetSRID</a> force le SRID d’une colonne géométrique. Cette fonction peut être utilisée lorsque que des données ont été importée sans information de projection.</p>
+<p>Créons une géométrie à partir de longitudes et latitudes :</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">SELECT</span> ST_SetSRID(ST_MakePoint(longitude_wgs84, latitude_wgs84), <span class="dv">4326</span>) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="kw">FROM</span> rff.station;</a></code></pre></div>
+<p><a href="https://postgis.net/docs/ST_MakePoint.html">ST_MakePoint</a> permet de créer un point.</p>
+<p>La même chose en incluant un identifiant pour visualiser la donnée sous QGIS :</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">SELECT</span> (<span class="fu">row_number</span>() <span class="kw">OVER</span> ()) <span class="kw">AS</span> gid,</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">       ST_SetSRID(ST_MakePoint(longitude_wgs84, latitude_wgs84), <span class="dv">4326</span>) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3"><span class="kw">FROM</span> rff.station;</a></code></pre></div>
+<p>Autre façon de faire :</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">SELECT</span> (<span class="fu">row_number</span>() <span class="kw">OVER</span> ()) <span class="kw">AS</span> gid,</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">       (<span class="st">&#39;SRID=4326; POINT(&#39;</span>||longitude_wgs84||<span class="st">&#39; &#39;</span>||latitude_wgs84||<span class="st">&#39;)&#39;</span>):<span class="ch">:geometry</span> <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="kw">FROM</span> rff.station;</a></code></pre></div>
+<h3 id="st_astext">7.2 ST_AsText</h3>
+<p>Par défaut, les géométries sont affichéres en binaire :</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">SELECT</span> geom </a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="kw">LIMIT</span> <span class="dv">10</span>;</a></code></pre></div>
+<p><a href="http://www.postgis.org/docs/ST_AsText.html">ST_AsText</a> permet de voir en mode texte (WKT) une géométrie :</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">select</span> ST_AsText(geom)</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">from</span> capitals;</a></code></pre></div>
+<p>Conseil : - PGAdmin a parfois du mal à afficher la données si elle est trop lourde (préférez psql pour ça)</p>
+<h3 id="st_summary">7.3 ST_Summary</h3>
+<p><a href="https://postgis.net/docs/ST_Summary.html">ST_Summary</a> permet de récupérer des informations (structure) sur les géometries :</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb31-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2"><span class="kw">SELECT</span> ST_Summary(geom) </a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"><span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb31-4" data-line-number="4"><span class="kw">LIMIT</span> <span class="dv">10</span>;</a></code></pre></div>
+<h2 id="analyses-basiques">8 Analyses basiques</h2>
+<h3 id="st_area">8.1 ST_Area</h3>
+<p><a href="https://postgis.net/docs/ST_Area.html">ST_Area</a> calcule l’aire d’une géométrie.</p>
+<p>Trouvons les communes populaires.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb32-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="co">-- Récupérons les 100 communes les plus denses</span></a>
+<a class="sourceLine" id="cb32-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb32-4" data-line-number="4"><span class="kw">SELECT</span> * </a>
+<a class="sourceLine" id="cb32-5" data-line-number="5"><span class="kw">FROM</span> admin.commune </a>
+<a class="sourceLine" id="cb32-6" data-line-number="6"><span class="kw">ORDER</span> <span class="kw">BY</span> population / ST_Area(geom) <span class="kw">DESC</span></a>
+<a class="sourceLine" id="cb32-7" data-line-number="7"><span class="kw">LIMIT</span> <span class="dv">100</span>;</a></code></pre></div>
+<p>Affichez le résultat dans QGIS à l’aide du DBManager (ou créez une table temporaire).</p>
+<h3 id="st_touches">8.2 ST_Touches</h3>
+<p><a href="https://postgis.net/docs/ST_Touches.html">ST_Touches</a> renvoie vrai si les géométrie se touchent par un point ou une ligne.</p>
+<p>Récupérons toutes les communes situées autours de celle nommée Toulouse</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb33-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="kw">SELECT</span> c.gid, c.geom, c.nom_com</a>
+<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="kw">FROM</span> admin.commune <span class="kw">AS</span> c</a>
+<a class="sourceLine" id="cb33-4" data-line-number="4"><span class="kw">WHERE</span> ST_Touches( c.geom, </a>
+<a class="sourceLine" id="cb33-5" data-line-number="5">                  (<span class="kw">SELECT</span> geom <span class="kw">FROM</span> admin.commune <span class="kw">WHERE</span> nom_com = <span class="st">&#39;TOULOUSE&#39;</span>)</a>
+<a class="sourceLine" id="cb33-6" data-line-number="6">                )</a>
+<a class="sourceLine" id="cb33-7" data-line-number="7">;</a></code></pre></div>
+<p>Affichez le résultat dans QGIS à l’aide du DBManager</p>
+<h3 id="st_length">8.3 ST_Length</h3>
+<p><a href="https://postgis.net/docs/ST_Length.html">ST_Length</a> calcule la longueur d’une géométrie de type Line.</p>
+<p>Quelles rivières sont les plus longues ?</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb34-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw">SELECT</span> <span class="fu">SUM</span>(ST_Length(geom)), toponyme</a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw">FROM</span> hydro.cours_eau</a>
+<a class="sourceLine" id="cb34-4" data-line-number="4"><span class="kw">WHERE</span> toponyme <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></a>
+<a class="sourceLine" id="cb34-5" data-line-number="5"><span class="kw">GROUP</span> <span class="kw">BY</span> toponyme</a>
+<a class="sourceLine" id="cb34-6" data-line-number="6"><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">SUM</span>(ST_Length(geom)) <span class="kw">DESC</span></a>
+<a class="sourceLine" id="cb34-7" data-line-number="7"><span class="kw">LIMIT</span> <span class="dv">10</span>;</a></code></pre></div>
+<p>Note:</p>
+<ul>
+<li>le premier résultat est du au fait que les données sont incomplètes</li>
+</ul>
+<p>A propos de la requête :</p>
+<ul>
+<li>NULL / NOT NULL</li>
+<li>GROUP BY et les fonction d’aggrégation (telle que SUM)</li>
+<li>ORDER BY ASC / DESC</li>
+<li>LIMIT</li>
+</ul>
+<h3 id="st_buffer">8.4 ST_Buffer</h3>
+<p><a href="http://www.postgis.net/docs/ST_Buffer.html">ST_Buffer</a> retourne un buffer (zone tampon) autours ou à l’intérieur (buffer négatif) d’une géométrie.</p>
+<figure>
+<img src="./assets/img/buffer.png" title="Buffer" alt="Buffer" /><figcaption>Buffer</figcaption>
+</figure>
+<div class="sourceCode" id="cb35"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">SELECT</span> ST_Buffer(geom, <span class="dv">10000</span>) <span class="kw">AS</span> geom, gid <span class="kw">from</span> admin.commune <span class="kw">where</span> nom_com = <span class="st">&#39;TOULOUSE&#39;</span>;</a></code></pre></div>
+<p>Faisons des buffers (zones tampons) autours des communes, puis autours des communes frontalières de Toulouse.</p>
+<h3 id="st_distance">8.5 ST_Distance</h3>
+<p><a href="https://postgis.net/docs/ST_Distance.html">ST_Distance</a> sert à mesurer la distance minimale entre deux géométries. Cette fonction retourne une valeur numérique exprimée dans l’unité de la projection courante (si nos données sont en L93, alors les résultats seront exprimés en mètres).</p>
+<p>Quelles sont les distances entre Toulouse et les autres grandes communes ?</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">SELECT</span> nom_com,</a>
+<a class="sourceLine" id="cb36-2" data-line-number="2">       population <span class="kw">AS</span> population,</a>
+<a class="sourceLine" id="cb36-3" data-line-number="3">       ST_Distance(geom, (<span class="kw">SELECT</span> geom <span class="kw">FROM</span> admin.commune <span class="kw">WHERE</span> nom_com = <span class="st">&#39;TOULOUSE&#39;</span>)) / <span class="dv">1000</span> <span class="kw">AS</span> dist_km</a>
+<a class="sourceLine" id="cb36-4" data-line-number="4"><span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb36-5" data-line-number="5"><span class="kw">WHERE</span> population &gt; <span class="dv">150000</span></a>
+<a class="sourceLine" id="cb36-6" data-line-number="6"><span class="kw">AND</span> <span class="kw">NOT</span> nom_com = <span class="st">&#39;TOULOUSE&#39;</span>;</a></code></pre></div>
+<p>A propos de la requête :</p>
+<ul>
+<li>Sous-requêtes SQL</li>
+</ul>
+<h2 id="aggrégations">9 Aggrégations</h2>
+<h3 id="st_union-aggrégation">9.1 ST_Union (aggrégation)</h3>
+<p><a href="https://postgis.net/docs/ST_Union.html">ST_Union</a> effectue l’union de géométries (aggrégation).</p>
+<p>Agrégeons les communes d’une même région :</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">SELECT</span> code_reg,</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2">       ST_Union(geom) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb37-3" data-line-number="3"><span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb37-4" data-line-number="4"><span class="kw">GROUP</span> <span class="kw">BY</span> code_reg;</a></code></pre></div>
+<figure>
+<img src="./assets/img/st_union.png" title="st_union" alt="Communes regroupées par département" /><figcaption>Communes regroupées par département</figcaption>
+</figure>
+<p>On ajoute un identifiant unique pour que QGIS puisse afficher la donnée :</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">SELECT</span> (<span class="fu">row_number</span>() <span class="kw">OVER</span> ()):<span class="ch">:integer</span> <span class="kw">AS</span> gid, </a>
+<a class="sourceLine" id="cb38-2" data-line-number="2">       code_reg,</a>
+<a class="sourceLine" id="cb38-3" data-line-number="3">       ST_Union(geom) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb38-4" data-line-number="4"><span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb38-5" data-line-number="5"><span class="kw">GROUP</span> <span class="kw">BY</span> code_reg;</a></code></pre></div>
+<p>A propos de la requête : - row_number() et SQL WINDOWING</p>
+<h3 id="st_collect">9.2 ST_Collect</h3>
+<p>Idem que précédement, mais cette fois-ci en utilisant <em>ST_Collect</em> à la place de <em>ST_Union</em></p>
+<p><a href="https://postgis.net/docs/ST_Collect.html">ST_Collect</a> <a href="https://postgis.net/docs/ST_CollectionExtract.html">ST_CollectionExtract</a></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">SELECT</span> (<span class="fu">row_number</span>() <span class="kw">OVER</span> ()):<span class="ch">:integer</span> <span class="kw">AS</span> gid, </a>
+<a class="sourceLine" id="cb39-2" data-line-number="2">       ST_CollectionExtract(ST_Collect(geom), <span class="dv">3</span>) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb39-3" data-line-number="3"><span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb39-4" data-line-number="4"><span class="kw">GROUP</span> <span class="kw">BY</span> code_reg;</a></code></pre></div>
+<p>A propos de la requête :</p>
+<ul>
+<li>Qu’est-ce qu’un MULTI*, qu’est-ce qu’une COLLECTION</li>
+<li>Pourquoi ST_Collect is plus rapide que ST_Union</li>
+</ul>
+<h3 id="dautres-fonction-de-collecte">9.3 D’autres fonction de collecte</h3>
+<p>Comme précédement, mais en utilisant <a href="https://postgis.net/docs/ST_CollectionHomogenize.html">ST_CollectionHomogenize</a> à la place de <em>ST_CollectionExtract</em></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">SELECT</span> (<span class="fu">row_number</span>() <span class="kw">OVER</span> ()):<span class="ch">:integer</span> <span class="kw">AS</span> gid, </a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">       ST_CollectionHomogenize(ST_Collect(geom)) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3"><span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb40-4" data-line-number="4"><span class="kw">GROUP</span> <span class="kw">BY</span> code_reg;</a></code></pre></div>
+<h3 id="fusion-de-lignes">9.4 Fusion de lignes</h3>
+<p>Récupérons et agrégeons toutes les LINESTRING composant le fleuve Rhone en une seule géométrie</p>
+<p><a href="https://postgis.net/docs/ST_LineMerge.html">ST_LineMerge</a> permet de consituer une multilinestring à partir de linestrings.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb41-2" data-line-number="2">   ST_Summary(ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), <span class="dv">2</span>))) <span class="kw">AS</span> geom,</a>
+<a class="sourceLine" id="cb41-3" data-line-number="3">   ST_Summary(ST_CollectionExtract(ST_Collect(geom), <span class="dv">2</span>)) <span class="kw">AS</span> geom </a>
+<a class="sourceLine" id="cb41-4" data-line-number="4"><span class="kw">FROM</span> hydro.cours_eau </a>
+<a class="sourceLine" id="cb41-5" data-line-number="5"><span class="kw">WHERE</span> code_hydro = <span class="st">&#39;V---0000&#39;</span>;</a>
+<a class="sourceLine" id="cb41-6" data-line-number="6"><span class="co">-- Code Hydrologique du Rhone</span></a></code></pre></div>
+<p>Pour visualiser sous QGIS:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">SELECT</span> <span class="dv">1</span>:<span class="ch">:integer</span> <span class="kw">AS</span> gid,</a>
+<a class="sourceLine" id="cb42-2" data-line-number="2">      ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), <span class="dv">2</span>)) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb42-3" data-line-number="3"><span class="kw">FROM</span> hydro.cours_eau </a>
+<a class="sourceLine" id="cb42-4" data-line-number="4"><span class="co">-- Hydrological code from Rhone river</span></a>
+<a class="sourceLine" id="cb42-5" data-line-number="5"><span class="kw">WHERE</span> code_hydro = <span class="st">&#39;V---0000&#39;</span>;</a></code></pre></div>
+<h2 id="accesseurs">10 Accesseurs</h2>
+<p>Agrégeons une rivière.</p>
+<p>Récupérons le nombre de points de la géométrie.</p>
+<p>Récupérons un point spécifique dans la géométrie.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb43-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb43-2" data-line-number="2"><span class="kw">WITH</span> rhone <span class="kw">AS</span> </a>
+<a class="sourceLine" id="cb43-3" data-line-number="3">(</a>
+<a class="sourceLine" id="cb43-4" data-line-number="4">  <span class="kw">SELECT</span> ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), <span class="dv">2</span>)) <span class="kw">AS</span> geom </a>
+<a class="sourceLine" id="cb43-5" data-line-number="5">  <span class="kw">FROM</span> hydro.cours_eau </a>
+<a class="sourceLine" id="cb43-6" data-line-number="6">  <span class="kw">WHERE</span> code_hydro = <span class="st">&#39;V---0000&#39;</span>  <span class="co">-- Code hydrologique du Rhone</span></a>
+<a class="sourceLine" id="cb43-7" data-line-number="7">)</a>
+<a class="sourceLine" id="cb43-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb43-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb43-10" data-line-number="10"><span class="kw">SELECT</span> ST_Summary(geom), </a>
+<a class="sourceLine" id="cb43-11" data-line-number="11">       ST_NumPoints(geom), </a>
+<a class="sourceLine" id="cb43-12" data-line-number="12">       ST_AsText(ST_PointN(geom, <span class="dv">55</span>)) <span class="kw">AS</span> p_<span class="dv">55</span></a>
+<a class="sourceLine" id="cb43-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb43-14" data-line-number="14"><span class="kw">FROM</span> rhone;</a></code></pre></div>
+<p>A propos de la requête :</p>
+<ul>
+<li>Qu’est-ce qu’une CTE</li>
+<li><a href="https://postgis.net/docs/ST_NumPoints.html">ST_NumPoints</a></li>
+<li><p><a href="https://postgis.net/docs/ST_PointN.html">ST_PointN</a></p></li>
+<li><p>Récupération de tous les points</p></li>
+</ul>
+<p>Si on veut récupérer tous les points du linéaire de la rivière, il faut utiliser une boucle. On va utiliser <em>generate_series(i, j)</em> :</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">select</span> generate_series(<span class="dv">1</span>, <span class="dv">55</span>);</a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb44-3" data-line-number="3"><span class="kw">select</span> * <span class="kw">from</span> generate_series(<span class="dv">1</span>, <span class="dv">55</span>);</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">WITH</span> rhone <span class="kw">AS</span> </a>
+<a class="sourceLine" id="cb45-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb45-3" data-line-number="3">  <span class="kw">SELECT</span> ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), <span class="dv">2</span>)) <span class="kw">AS</span> geom </a>
+<a class="sourceLine" id="cb45-4" data-line-number="4">  <span class="kw">FROM</span> hydro.cours_eau </a>
+<a class="sourceLine" id="cb45-5" data-line-number="5">  <span class="kw">WHERE</span> code_hydro = <span class="st">&#39;V---0000&#39;</span>  <span class="co">-- Code hydrologique du Rhone</span></a>
+<a class="sourceLine" id="cb45-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb45-7" data-line-number="7"><span class="kw">SELECT</span> generate_series(<span class="dv">1</span>, ST_NumPoints(geom)) <span class="kw">as</span> n</a>
+<a class="sourceLine" id="cb45-8" data-line-number="8"><span class="kw">FROM</span> rhone;</a></code></pre></div>
+<p>A propos de la requête :</p>
+<ul>
+<li>boucle generate_series</li>
+<li>Idem que précédement avec une boucle sur chaque point</li>
+</ul>
+<p>A présent, récupérons les points :</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="kw">WITH</span> rhone <span class="kw">AS</span> </a>
+<a class="sourceLine" id="cb46-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb46-3" data-line-number="3">  <span class="kw">SELECT</span> ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), <span class="dv">2</span>)) <span class="kw">AS</span> geom </a>
+<a class="sourceLine" id="cb46-4" data-line-number="4">  <span class="kw">FROM</span> hydro.cours_eau </a>
+<a class="sourceLine" id="cb46-5" data-line-number="5">  <span class="kw">WHERE</span> code_hydro = <span class="st">&#39;V---0000&#39;</span>  <span class="co">-- Code hydrologique du Rhone</span></a>
+<a class="sourceLine" id="cb46-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb46-7" data-line-number="7">), <span class="kw">loop</span> <span class="kw">AS</span> (</a>
+<a class="sourceLine" id="cb46-8" data-line-number="8">  <span class="kw">SELECT</span> generate_series(<span class="dv">1</span>, ST_NumPoints(geom)) <span class="kw">AS</span> n</a>
+<a class="sourceLine" id="cb46-9" data-line-number="9">  <span class="kw">FROM</span> rhone</a>
+<a class="sourceLine" id="cb46-10" data-line-number="10">)</a>
+<a class="sourceLine" id="cb46-11" data-line-number="11"><span class="kw">SELECT</span> n, ST_AsText(ST_PointN(geom, n))</a>
+<a class="sourceLine" id="cb46-12" data-line-number="12"><span class="kw">FROM</span> rhone, <span class="kw">loop</span>;</a></code></pre></div>
+<p>Enfin, la requête pour afficher les données dans QGIS:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">WITH</span> rhone <span class="kw">AS</span> </a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb47-3" data-line-number="3">  <span class="kw">SELECT</span> ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), <span class="dv">2</span>)) <span class="kw">AS</span> geom </a>
+<a class="sourceLine" id="cb47-4" data-line-number="4">  <span class="kw">FROM</span> hydro.cours_eau </a>
+<a class="sourceLine" id="cb47-5" data-line-number="5">  <span class="kw">WHERE</span> code_hydro = <span class="st">&#39;V---0000&#39;</span>  <span class="co">-- Code hydrologique du Rhone</span></a>
+<a class="sourceLine" id="cb47-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb47-7" data-line-number="7">), <span class="kw">loop</span> <span class="kw">AS</span> (</a>
+<a class="sourceLine" id="cb47-8" data-line-number="8">  <span class="kw">SELECT</span> generate_series(<span class="dv">1</span>, ST_NumPoints(geom)) <span class="kw">AS</span> n</a>
+<a class="sourceLine" id="cb47-9" data-line-number="9">  <span class="kw">FROM</span> rhone</a>
+<a class="sourceLine" id="cb47-10" data-line-number="10">)</a>
+<a class="sourceLine" id="cb47-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb47-12" data-line-number="12"><span class="kw">SELECT</span> n:<span class="ch">:integer</span> <span class="kw">AS</span> gid, ST_PointN(geom, n) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb47-13" data-line-number="13"><span class="kw">FROM</span> rhone, <span class="kw">loop</span>;</a></code></pre></div>
+<p>On pourrait utiliser le format GeoJSON</p>
+<p>Afficher une géométrie au format GeoJSON</p>
+<blockquote>
+<p>Résultat à tester sur http://geojsonlint.com/</p>
+</blockquote>
+<div class="sourceCode" id="cb48"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">WITH</span> rhone <span class="kw">AS</span> </a>
+<a class="sourceLine" id="cb48-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb48-3" data-line-number="3">  <span class="kw">SELECT</span> ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), <span class="dv">2</span>)) <span class="kw">AS</span> geom </a>
+<a class="sourceLine" id="cb48-4" data-line-number="4">  <span class="kw">FROM</span> hydro.cours_eau </a>
+<a class="sourceLine" id="cb48-5" data-line-number="5">  <span class="kw">WHERE</span> code_hydro = <span class="st">&#39;V---0000&#39;</span>  <span class="co">-- Code hydrologique du Rhone</span></a>
+<a class="sourceLine" id="cb48-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb48-7" data-line-number="7">)</a>
+<a class="sourceLine" id="cb48-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb48-9" data-line-number="9"><span class="kw">SELECT</span> substring(ST_AsGeoJSON(ST_Transform(geom, <span class="dv">4326</span>), <span class="dv">5</span>) <span class="kw">from</span> <span class="dv">1</span> <span class="kw">for</span> <span class="dv">300</span>)</a>
+<a class="sourceLine" id="cb48-10" data-line-number="10"><span class="kw">FROM</span> rhone;</a></code></pre></div>
+<p>Autre affichage en GeoJSON :</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">select</span> </a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">    ST_AsGeojson(ST_Collect(ST_Transform(geom, <span class="dv">4326</span>)), <span class="dv">5</span>) </a>
+<a class="sourceLine" id="cb49-3" data-line-number="3"><span class="kw">from</span> (</a>
+<a class="sourceLine" id="cb49-4" data-line-number="4">    <span class="kw">select</span> </a>
+<a class="sourceLine" id="cb49-5" data-line-number="5">        * </a>
+<a class="sourceLine" id="cb49-6" data-line-number="6">    <span class="kw">from</span> </a>
+<a class="sourceLine" id="cb49-7" data-line-number="7">        admin.commune </a>
+<a class="sourceLine" id="cb49-8" data-line-number="8">    <span class="kw">where</span> </a>
+<a class="sourceLine" id="cb49-9" data-line-number="9">        code_dept = <span class="st">&#39;69&#39;</span></a>
+<a class="sourceLine" id="cb49-10" data-line-number="10">) <span class="kw">as</span> coms;</a></code></pre></div>
+<p>A propos de la requête : - <a href="http://www.postgis.org/docs/ST_AsGeoJSON.html">ST_AsGeoJSON</a> - Nombre de décimales a utiliser</p>
+<ul>
+<li>Testez les résultats sur ce site : http://geojsonlint.com/</li>
+<li>Affichez les résultats sur une carte en utilisant par exemple : http://geojson.io</li>
+</ul>
+<h2 id="type-geography">11 Type Geography</h2>
+<p>La terre n’est pas plate, et on veut parfois ne pas travailler dans un système de projection. Pour cela, PostGIS propose un type <strong>geography</strong>.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw">create</span> <span class="kw">table</span> capitals (</a>
+<a class="sourceLine" id="cb50-2" data-line-number="2">    <span class="kw">id</span> serial,</a>
+<a class="sourceLine" id="cb50-3" data-line-number="3">    name <span class="dt">varchar</span>,</a>
+<a class="sourceLine" id="cb50-4" data-line-number="4">    geom geography(POINT,<span class="dv">4326</span>)</a>
+<a class="sourceLine" id="cb50-5" data-line-number="5">);</a></code></pre></div>
+<p>Limitations :</p>
+<ul>
+<li>Latitude/Longitude seulement (SRID:4326 si PostGIS &lt; 2.1.6)</li>
+<li>pas toutes les fonctions PostGIS implémentées</li>
+<li>fonctionne avec tous les standards OGC sauf les courbes (*CURVES)</li>
+</ul>
+<p>Petit exercice pratique sur le type géographique, nous allons prendre l’exemple connu d’un avion faisant le trajet Paris / Los Angeles. A combien de Km passe-t-il de l’Islande ?</p>
+<p>Ecrivez la requête permettant de calculer la distance entre une ligne de coordonnées -118.4079 33.9434, 2.5559 49.0083 et un point de coordonnées 2.5559 49.0083. Exprimez le résultat en projection mercator (SRID = 3857).</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb51-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb51-2" data-line-number="2"><span class="co">-- Requête en prenant la projection mercator :</span></a>
+<a class="sourceLine" id="cb51-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb51-4" data-line-number="4"><span class="kw">SELECT</span> ST_Distance(</a>
+<a class="sourceLine" id="cb51-5" data-line-number="5">  ST_transform(ST_GeomFromText(<span class="st">&#39;LINESTRING(-118.4079 33.9434, 2.5559 49.0083)&#39;</span>, <span class="dv">4326</span>), <span class="dv">3857</span>),</a>
+<a class="sourceLine" id="cb51-6" data-line-number="6">  ST_transform(ST_GeomFromText(<span class="st">&#39;POINT(-21.8628 64.1286)&#39;</span>, <span class="dv">4326</span>), <span class="dv">3857</span>)</a>
+<a class="sourceLine" id="cb51-7" data-line-number="7">);</a></code></pre></div>
+<p>Ecrivez la même requête en utilisant cette fois-ci le type geography (il faut donc utiliser la fonction <a href="https://postgis.net/docs/ST_GeographyFromText.html">ST_GeographyFromText</a> ou l’opérateur de CAST ::geography).</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb52-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb52-2" data-line-number="2"><span class="co">-- Avec le type geography :</span></a>
+<a class="sourceLine" id="cb52-3" data-line-number="3"><span class="co">-- Distance entre une ligne Paris/ Los Angeles, et l&#39;Islande</span></a>
+<a class="sourceLine" id="cb52-4" data-line-number="4"><span class="kw">SELECT</span> ST_Distance(</a>
+<a class="sourceLine" id="cb52-5" data-line-number="5">  ST_GeographyFromText(<span class="st">&#39;LINESTRING(-118.4079 33.9434, 2.5559 49.0083)&#39;</span>), <span class="co">-- LAX-CDG</span></a>
+<a class="sourceLine" id="cb52-6" data-line-number="6">  ST_GeographyFromText(<span class="st">&#39;POINT(-21.8628 64.1286)&#39;</span>)                        <span class="co">-- Iceland</span></a>
+<a class="sourceLine" id="cb52-7" data-line-number="7">);</a>
+<a class="sourceLine" id="cb52-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb52-9" data-line-number="9"><span class="co">-- ou</span></a>
+<a class="sourceLine" id="cb52-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb52-11" data-line-number="11"><span class="kw">SELECT</span> ST_Distance(</a>
+<a class="sourceLine" id="cb52-12" data-line-number="12">  ST_GeomFromText(<span class="st">&#39;LINESTRING(-118.4079 33.9434, 2.5559 49.0083)&#39;</span>):<span class="ch">:geography</span>, <span class="co">-- LAX-CDG</span></a>
+<a class="sourceLine" id="cb52-13" data-line-number="13">  ST_GeomFromText(<span class="st">&#39;POINT(-21.8628 64.1286)&#39;</span>):<span class="ch">:geography</span>                        <span class="co">-- Iceland</span></a>
+<a class="sourceLine" id="cb52-14" data-line-number="14">);</a></code></pre></div>
+<p>On voit que la distance retournée quand on fonctionne en mode geography est plus beaucoup courte que celle calculée en projection L93. Elle tient compte du fait que la terre n’est pas plate.</p>
+<figure>
+<img src="./assets/img/lax_cdg.jpg" title="Différence geometry / geography" alt="Geography" /><figcaption>Geography</figcaption>
+</figure>
+<h2 id="analyses">12 Analyses</h2>
+<h3 id="st_intersects-intersections-de-géométries">12.1 ST_Intersects (intersections de géométries)</h3>
+<p>L’une des opérations les plus courantes lorsqu’on manipule des objets géométriques est l’intersection spatiale. Comment trouver un ensemble de points à l’intérieur d’un polygone ? Est-ce que ces deux polygones se superposent ? Cette ligne passe-t-elle au travers de ce polygone ? PostGIS propose pour cela la fonction <a href="https://postgis.net/docs/ST_Intersects.html">ST_Intersects</a>.</p>
+<figure>
+<img src="./assets/img/intersection.png" title="Intersection" alt="Intersection" /><figcaption>Intersection</figcaption>
+</figure>
+<p>Comment trouver par exemple les points de la table <strong>poi</strong> contenus dans un polygone spécifique de la table <strong>poly</strong> ?</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">select</span> p1.*</a>
+<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="kw">from</span> poi p1, poly p2</a>
+<a class="sourceLine" id="cb53-3" data-line-number="3"><span class="kw">where</span> ST_Intersects(p1.geom, p2.geom)</a>
+<a class="sourceLine" id="cb53-4" data-line-number="4"><span class="kw">and</span> p2.id = <span class="dv">1</span>;</a></code></pre></div>
+<p>Cette requête retourne la liste des points qui “intersectent” le polygone dont l’id est égal à 1.</p>
+<blockquote>
+<p>Note: La fonction ST_intersects renvoie TRUE ou FALSE (et non une géométrie). Sa place est donc le plus souvent dans le <strong>where</strong> de la requête.</p>
+</blockquote>
+<p>Récupérons toutes les communes traversées par une rivière, ordonnées de la première à la dernière :</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">WITH</span> rhone <span class="kw">AS</span></a>
+<a class="sourceLine" id="cb54-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb54-3" data-line-number="3">  <span class="kw">SELECT</span> geom</a>
+<a class="sourceLine" id="cb54-4" data-line-number="4">  <span class="kw">FROM</span> hydro.cours_eau</a>
+<a class="sourceLine" id="cb54-5" data-line-number="5">  <span class="kw">WHERE</span> code_hydro = <span class="st">&#39;V---0000&#39;</span>  <span class="co">-- Code hydrologique du Rhone</span></a>
+<a class="sourceLine" id="cb54-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb54-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb54-8" data-line-number="8"><span class="kw">SELECT</span> nom_com</a>
+<a class="sourceLine" id="cb54-9" data-line-number="9"><span class="kw">FROM</span> admin.commune <span class="kw">AS</span> c, rhone <span class="kw">AS</span> r</a>
+<a class="sourceLine" id="cb54-10" data-line-number="10"><span class="kw">WHERE</span> ST_Intersects(c.geom, r.geom)</a>
+<a class="sourceLine" id="cb54-11" data-line-number="11"><span class="kw">ORDER</span> <span class="kw">BY</span> ST_LineLocatePoint(</a>
+<a class="sourceLine" id="cb54-12" data-line-number="12">    ST_LineMerge(r.geom),</a>
+<a class="sourceLine" id="cb54-13" data-line-number="13">    ST_ClosestPoint(r.geom, c.geom))</a>
+<a class="sourceLine" id="cb54-14" data-line-number="14">;</a></code></pre></div>
+<p>Utilisons la reprojection à la volée et visualisons le résultat sous QGIS :</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">SELECT</span>  (<span class="fu">row_number</span>() <span class="kw">OVER</span> ()):<span class="ch">:integer</span> <span class="kw">AS</span> gid,</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2">        ST_Transform(ST_SetSRID(</a>
+<a class="sourceLine" id="cb55-3" data-line-number="3">            ST_MakePoint(longitude_wgs84, latitude_wgs84), <span class="dv">4326</span>), <span class="dv">2154</span></a>
+<a class="sourceLine" id="cb55-4" data-line-number="4">        ) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb55-5" data-line-number="5"><span class="kw">FROM</span> rff.station;</a></code></pre></div>
+<p>Toute donnée spatiale doit être associé à une projection (code SRID). PostGIS ne fera jamais implictement de conversion de projections. Vous devez toujours le faire de manière explicite.</p>
+<p><a href="https://postgis.net/docs/ST_Transform.html">ST_Transform</a> vous permet de convertir des géométries d’une projection vers une autre.</p>
+<h3 id="généralisation">12.2 Généralisation</h3>
+<p>Généralisation de données = simplification de géométries :</p>
+<p><a href="https://postgis.net/docs/ST_Simplify.html">ST_Simplify</a> renvoie une version simplifiée d’une géométrie.</p>
+<p>St_Simplify utilise l’algorithme Douglas-Peuker.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">SELECT</span> ST_AsGeoJSON(</a>
+<a class="sourceLine" id="cb56-2" data-line-number="2">    ST_Transform(</a>
+<a class="sourceLine" id="cb56-3" data-line-number="3">        ST_Simplify(geom, <span class="dv">800</span>),</a>
+<a class="sourceLine" id="cb56-4" data-line-number="4">        <span class="dv">4326</span>), <span class="dv">5</span></a>
+<a class="sourceLine" id="cb56-5" data-line-number="5">    )</a>
+<a class="sourceLine" id="cb56-6" data-line-number="6"><span class="kw">FROM</span> commune;</a></code></pre></div>
+<figure>
+<img src="./assets/img/geojson.png" title="Geojson" alt="Geojson" /><figcaption>Geojson</figcaption>
+</figure>
+<div class="sourceCode" id="cb57"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="kw">WITH</span> rhone <span class="kw">AS</span></a>
+<a class="sourceLine" id="cb57-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb57-3" data-line-number="3">  <span class="kw">SELECT</span> ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), <span class="dv">2</span>)) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb57-4" data-line-number="4">  <span class="kw">FROM</span> hydro.cours_eau</a>
+<a class="sourceLine" id="cb57-5" data-line-number="5">  <span class="kw">WHERE</span> code_hydro = <span class="st">&#39;V---0000&#39;</span>  <span class="co">-- Code hydrologique du Rhone</span></a>
+<a class="sourceLine" id="cb57-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb57-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb57-8" data-line-number="8"><span class="kw">SELECT</span> <span class="dv">1</span>:<span class="ch">:integer</span> <span class="kw">AS</span> gid, ST_Simplify(geom, <span class="dv">250</span>) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb57-9" data-line-number="9"><span class="kw">FROM</span> rhone;</a></code></pre></div>
+<ul>
+<li>Affichez la données dans QGIS</li>
+<li>Changez progressivement la tolérance de la fonction simplify</li>
+</ul>
+<p>A propos de la requête :</p>
+<ul>
+<li>Généralisation</li>
+<li>Soucis topologiques</li>
+</ul>
+<h3 id="recherche-par-buffer">12.3 Recherche par buffer</h3>
+<p>Récupérons les communes situées à 50km du centre de Toulouse :</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">SELECT</span> gid, nom_com, geom</a>
+<a class="sourceLine" id="cb58-2" data-line-number="2"><span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb58-3" data-line-number="3"><span class="kw">WHERE</span> ST_Intersects(geom,</a>
+<a class="sourceLine" id="cb58-4" data-line-number="4"> (<span class="kw">SELECT</span> ST_Buffer(ST_Centroid(geom), <span class="dv">50000</span>)</a>
+<a class="sourceLine" id="cb58-5" data-line-number="5">  <span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb58-6" data-line-number="6">  <span class="kw">WHERE</span> nom_com = <span class="st">&#39;TOULOUSE&#39;</span></a>
+<a class="sourceLine" id="cb58-7" data-line-number="7"> ));</a></code></pre></div>
+<p>La même chose en utilisant une CTE, avec de bonnes performances :</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">WITH</span> toulouse_50km <span class="kw">AS</span></a>
+<a class="sourceLine" id="cb59-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb59-3" data-line-number="3">  <span class="kw">SELECT</span> ST_Buffer(ST_Centroid(geom), <span class="dv">50000</span>) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb59-4" data-line-number="4">  <span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb59-5" data-line-number="5">  <span class="kw">WHERE</span> nom_com = <span class="st">&#39;TOULOUSE&#39;</span></a>
+<a class="sourceLine" id="cb59-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb59-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb59-8" data-line-number="8"><span class="kw">SELECT</span> gid, nom_com, c.geom</a>
+<a class="sourceLine" id="cb59-9" data-line-number="9"><span class="kw">FROM</span> admin.commune <span class="kw">AS</span> c, toulouse_50km <span class="kw">AS</span> t</a>
+<a class="sourceLine" id="cb59-10" data-line-number="10"><span class="kw">WHERE</span> ST_Intersects(c.geom, t.geom);</a></code></pre></div>
+<p>La même chose mais avec des performances dégradées à cause ST_buffer imbriquée dans ST_Intersects :</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">WITH</span> toulouse <span class="kw">AS</span></a>
+<a class="sourceLine" id="cb60-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb60-3" data-line-number="3">  <span class="kw">SELECT</span> ST_Centroid(geom) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb60-4" data-line-number="4">  <span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb60-5" data-line-number="5">  <span class="kw">WHERE</span> nom_com = <span class="st">&#39;TOULOUSE&#39;</span></a>
+<a class="sourceLine" id="cb60-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb60-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb60-8" data-line-number="8"><span class="kw">SELECT</span> gid, nom_com, c.geom</a>
+<a class="sourceLine" id="cb60-9" data-line-number="9"><span class="kw">FROM</span> admin.commune <span class="kw">AS</span> c, toulouse <span class="kw">AS</span> t</a>
+<a class="sourceLine" id="cb60-10" data-line-number="10"><span class="kw">WHERE</span> ST_Intersects(c.geom, ST_Buffer(t.geom, <span class="dv">50000</span>));</a></code></pre></div>
+<p>Une dernière, avec la fonction <em>ST_Dwithin</em> :</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">select</span></a>
+<a class="sourceLine" id="cb61-2" data-line-number="2">    t1.*</a>
+<a class="sourceLine" id="cb61-3" data-line-number="3"><span class="kw">from</span></a>
+<a class="sourceLine" id="cb61-4" data-line-number="4">    admin.commune <span class="kw">as</span> t1</a>
+<a class="sourceLine" id="cb61-5" data-line-number="5"><span class="kw">join</span></a>
+<a class="sourceLine" id="cb61-6" data-line-number="6">    admin.commune <span class="kw">as</span> t2</a>
+<a class="sourceLine" id="cb61-7" data-line-number="7"><span class="kw">on</span></a>
+<a class="sourceLine" id="cb61-8" data-line-number="8">    ST_DWithin(t1.geom, ST_Centroid(t2.geom), <span class="dv">50000</span>)</a>
+<a class="sourceLine" id="cb61-9" data-line-number="9"><span class="kw">where</span></a>
+<a class="sourceLine" id="cb61-10" data-line-number="10">    t2.nom_com = <span class="st">&#39;TOULOUSE&#39;</span>;</a></code></pre></div>
+<p>A propos de la requête :</p>
+<ul>
+<li>Les index et les opérateurs spatiaux peuvent améliorer grandement les performances</li>
+</ul>
+<h3 id="plus-proches-voisins">12.4 Plus proches voisins</h3>
+<p>Les grandes communes sont généralement situées le long des grands fleuves. Trouvons pour chaque grande commune la plus proche rivière :</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">SELECT</span> c.nom_com,</a>
+<a class="sourceLine" id="cb62-2" data-line-number="2">       c.population <span class="kw">AS</span> population,</a>
+<a class="sourceLine" id="cb62-3" data-line-number="3">       r.toponyme,</a>
+<a class="sourceLine" id="cb62-4" data-line-number="4">       ST_Distance(r.geom, c.geom) <span class="kw">AS</span> dist</a>
+<a class="sourceLine" id="cb62-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb62-6" data-line-number="6"><span class="kw">FROM</span> admin.commune <span class="kw">AS</span> c,</a>
+<a class="sourceLine" id="cb62-7" data-line-number="7">     hydro.cours_eau <span class="kw">AS</span> r</a>
+<a class="sourceLine" id="cb62-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb62-9" data-line-number="9"><span class="kw">WHERE</span> r.classe = <span class="st">&#39;1&#39;</span> <span class="co">-- uniquement les grandes rivières</span></a>
+<a class="sourceLine" id="cb62-10" data-line-number="10"><span class="kw">AND</span>   r.toponyme <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></a>
+<a class="sourceLine" id="cb62-11" data-line-number="11"><span class="kw">AND</span>   (c.population) &gt; <span class="dv">200000</span></a>
+<a class="sourceLine" id="cb62-12" data-line-number="12"><span class="kw">AND</span>   r.geom &amp;&amp; ST_Expand(c.geom, <span class="dv">10000</span>)</a>
+<a class="sourceLine" id="cb62-13" data-line-number="13"><span class="kw">ORDER</span> <span class="kw">BY</span> r.geom &lt;-&gt; c.geom; <span class="co">-- distance</span></a></code></pre></div>
+<p>A propos de la requête :</p>
+<ul>
+<li>Bbox et geometrie</li>
+<li>Opérateur d’intersection &amp;&amp;</li>
+<li>Opérateur KNN &lt;#&gt; et &lt;-&gt;</li>
+</ul>
+<h3 id="référencement-linéaire">12.5 Référencement linéaire</h3>
+<p>Fonctions de référencement Linéaire (cas de tronçons routiers)</p>
+<figure>
+<img src="./assets/img/interpolation_lineaire.png" title="Interpolation lineaire" alt="Interpolation linéaire" /><figcaption>Interpolation linéaire</figcaption>
+</figure>
+<ul>
+<li><a href="http://www.postgis.org/docs/ST_Line_Interpolate_Point.html">ST_line_interpolate_point(linestring, location)</a></li>
+<li><a href="http://www.postgis.org/docs/ST_Line_Substring.html">ST_line_substring(linestring, start, end)</a></li>
+<li><a href="http://postgis.net/docs/manual-2.1/ST_Line_Locate_Point.html">ST_line_locate_point(LineString, Point)</a></li>
+<li><a href="https://postgis.net/docs/manual-1.4/ST_Locate_Along_Measure.html">ST_locate_along_measure(geometry, float8)</a></li>
+</ul>
+</body>
+</html>

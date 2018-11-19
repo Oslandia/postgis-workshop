@@ -1,0 +1,110 @@
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz&subset=latin);
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+
+
+html, body {
+    color: #444;
+    margin: 0 auto;
+    width: 900px;
+    font-family: Raleway, 'Trebuchet MS', Trebuchet, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: justify;
+    padding: 10px;
+    background: url(../img/dust_scratches.png);
+}
+
+h1, h2 {
+    color: #3a75ac;
+}
+
+h3 {
+    border-bottom: 1px dotted #bbb;
+}
+
+h2, h3 {
+    margin-top: 40px;
+}
+
+h1.title {
+    font-size: 14px;
+    position: fixed;
+    top: 0px;
+    left: 10px;
+}
+
+a {
+    color: #3a75ac;
+}
+
+pre {
+    margin-left: 30px;
+}
+
+
+
+/* Code */
+div.sourceCode {
+    overflow: hidden;
+}
+
+code {
+    background: #fffbee;
+    color: #a98200;
+    padding: 30px;
+    width: 100%;
+    float: left;
+    border-radius: 3px;
+    margin-bottom: 20px;
+}
+
+.correction code {
+    background: #fddeff;
+}
+
+/* Note */
+blockquote {
+    font-style: italic;
+    background: #e9f7e1;
+    border-radius: 3px;
+    padding: 10px 20px;
+    margin: 0;
+}
+
+/* Exercices */
+dl {
+    font-style: italic;
+    background: #e7eff7;
+    border-radius: 3px;
+    padding-bottom: 10px;
+}
+
+dl dt {
+    background: #c9dbed;
+    padding: 3px;
+    margin-bottom: 10px;
+}
+
+dl dd {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.fixed {
+    position: fixed;
+    bottom: 10px;
+}
+
+.left {
+    left: 10px;
+}
+
+.right {
+    right: 10px;
+}
+
+.sommaire-1 {
+    
+}
+
+.sommaire-2 {
+    margin-left: 20px;
+}
