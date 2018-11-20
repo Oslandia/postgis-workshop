@@ -783,12 +783,13 @@ A propos de la requête :
 Idem que précédement, mais cette fois-ci en utilisant _ST_Collect_ à la place de _ST_Union_
 
 
-[ST_Collect](https://postgis.net/docs/ST_Collect.html)
-[ST_CollectionExtract](https://postgis.net/docs/ST_CollectionExtract.html)
+[ST_Collect](https://postgis.net/docs/ST_Collect.html) est assez similaire à ST_Union, sauf que qu'elle retourne toujours une geometry collection. Là où ST_Union pourra renvoyer des géométries fusionnées simple, ST_Collect renverra toujours des multi géométries.
+
+[ST_CollectionExtract](https://postgis.net/docs/ST_CollectionExtract.html) permet d'extraire d'une collection le sobjets d'un type particulier.
 
 ```SQL
 SELECT (row_number() OVER ())::integer AS gid, 
-       ST_CollectionExtract(ST_Collect(geom), 3) AS geom
+       ST_CollectionExtract(ST_Collect(geom), 3) AS geom  -- 3 est le type polygone
 FROM admin.commune
 GROUP BY code_reg;
 ```
@@ -802,7 +803,7 @@ A propos de la requête :
 ### D'autres fonction de collecte
 
 
-Comme précédement, mais en utilisant [ST_CollectionHomogenize](https://postgis.net/docs/ST_CollectionHomogenize.html) à la place de _ST_CollectionExtract_
+Comme précédement, mais en utilisant [ST_CollectionHomogenize](https://postgis.net/docs/ST_CollectionHomogenize.html) à la place de _ST_CollectionExtract_. ST_CollectionHomogenize renvoie la version la plus simple d'une collection.
 
 
 ```SQL

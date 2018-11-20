@@ -750,9 +750,10 @@ psql -d NOM_BASE &lt; sql_file.sql</code></pre>
 <p>A propos de la requête : - row_number() et SQL WINDOWING</p>
 <h3 id="st_collect">9.2 ST_Collect</h3>
 <p>Idem que précédement, mais cette fois-ci en utilisant <em>ST_Collect</em> à la place de <em>ST_Union</em></p>
-<p><a href="https://postgis.net/docs/ST_Collect.html">ST_Collect</a> <a href="https://postgis.net/docs/ST_CollectionExtract.html">ST_CollectionExtract</a></p>
+<p><a href="https://postgis.net/docs/ST_Collect.html">ST_Collect</a> est assez similaire à ST_Union, sauf que qu’elle retourne toujours une geometry collection. Là où ST_Union pourra renvoyer des géométries fusionnées simple, ST_Collect renverra toujours des multi géométries.</p>
+<p><a href="https://postgis.net/docs/ST_CollectionExtract.html">ST_CollectionExtract</a> permet d’extraire d’une collection le sobjets d’un type particulier.</p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">SELECT</span> (<span class="fu">row_number</span>() <span class="kw">OVER</span> ()):<span class="ch">:integer</span> <span class="kw">AS</span> gid, </a>
-<a class="sourceLine" id="cb39-2" data-line-number="2">       ST_CollectionExtract(ST_Collect(geom), <span class="dv">3</span>) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb39-2" data-line-number="2">       ST_CollectionExtract(ST_Collect(geom), <span class="dv">3</span>) <span class="kw">AS</span> geom  <span class="co">-- 3 est le type polygone</span></a>
 <a class="sourceLine" id="cb39-3" data-line-number="3"><span class="kw">FROM</span> admin.commune</a>
 <a class="sourceLine" id="cb39-4" data-line-number="4"><span class="kw">GROUP</span> <span class="kw">BY</span> code_reg;</a></code></pre></div>
 <p>A propos de la requête :</p>
@@ -761,7 +762,7 @@ psql -d NOM_BASE &lt; sql_file.sql</code></pre>
 <li>Pourquoi ST_Collect is plus rapide que ST_Union</li>
 </ul>
 <h3 id="dautres-fonction-de-collecte">9.3 D’autres fonction de collecte</h3>
-<p>Comme précédement, mais en utilisant <a href="https://postgis.net/docs/ST_CollectionHomogenize.html">ST_CollectionHomogenize</a> à la place de <em>ST_CollectionExtract</em></p>
+<p>Comme précédement, mais en utilisant <a href="https://postgis.net/docs/ST_CollectionHomogenize.html">ST_CollectionHomogenize</a> à la place de <em>ST_CollectionExtract</em>. ST_CollectionHomogenize renvoie la version la plus simple d’une collection.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">SELECT</span> (<span class="fu">row_number</span>() <span class="kw">OVER</span> ()):<span class="ch">:integer</span> <span class="kw">AS</span> gid, </a>
 <a class="sourceLine" id="cb40-2" data-line-number="2">       ST_CollectionHomogenize(ST_Collect(geom)) <span class="kw">AS</span> geom</a>
 <a class="sourceLine" id="cb40-3" data-line-number="3"><span class="kw">FROM</span> admin.commune</a>
