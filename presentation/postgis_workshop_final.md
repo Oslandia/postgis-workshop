@@ -22,6 +22,8 @@ Quelques liens utiles pour commencer:
 <div class="sommaire-1">[1 Plan du workshop (indicatif)](#plan-du-workshop-indicatif)</div>
 <div class="sommaire-1">[2 Pour bien commencer](#pour-bien-commencer)</div>
 <div class="sommaire-2">[2.1 PostGIS, qu'est-ce que c'est ?](#postgis-quest-ce-que-cest)</div>
+<div class="sommaire-2">[2.2 Installation de PostGIS sous linux](#installation-de-postgis-sous-linux)</div>
+<div class="sommaire-2">[2.3 Installation de PostGIS sous windows](#installation-de-postgis-sous-windows)</div>
 <div class="sommaire-1">[3 PostGIS: introduction](#postgis-introduction)</div>
 <div class="sommaire-2">[3.1 Standards](#standards)</div>
 <div class="sommaire-2">[3.2 Architecture](#architecture)</div>
@@ -93,7 +95,7 @@ $ cd workshop/postgis-workshop-master
 
 La première étape est de créer la base de données et de charger les données
 
-Lancez les 3 scripts contenus dans le répertoire _scripts_ pour créer la base, télécharger le jeu de test, et charger les données dans la base.
+Lancez les 3 scripts contenus dans le répertoire _scripts_ pour créer la base, téléchargez le jeu de test, et chargez les données dans la base.
 
 Pour charger les shapefiles, vous pouvez aussi utiliser l'utilitaire _shp2pgsql-gui_.
 
@@ -125,7 +127,7 @@ Elle apporte :
 * des tables et vues nécessaires au bon fonctionnement de PostGIS
 
 
-#### Installation de PostGIS sous linux
+### 2.2 Installation de PostGIS sous linux
 
 Dans un environnement Linux, l'installation est très facile. Il suffit d'installer les paquets disponibles pour votre distribution. Exemple sous Ubuntu :
 
@@ -149,7 +151,7 @@ createdb test
 > Rappel: PostgreSQL est un serveur de base de données, il est installé sur une machine et agit comme un service, attendant des requêtes qui lui sont envoyées.
 
 
-#### Installation de PostGIS sous windows
+### 2.3 Installation de PostGIS sous windows
 
 Sous Windows, EnterpriseDB fournit un [binaire](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads). Le programme vous invite à installer PostgreSQL. A l'issue de l'installation, un programme annexe vous proposera d'installer des logiciels tierces. Vous y choisirez PostGIS. Suivez les étapes d'installations. Si tout se passe bien, vous devriez voir apparaître un nouveau service postgresql.
 

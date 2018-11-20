@@ -40,7 +40,7 @@ $ cd workshop/postgis-workshop-master
 
 La première étape est de créer la base de données et de charger les données
 
-Lancez les 3 scripts contenus dans le répertoire _scripts_ pour créer la base, télécharger le jeu de test, et charger les données dans la base.
+Lancez les 3 scripts contenus dans le répertoire _scripts_ pour créer la base, téléchargez le jeu de test, et chargez les données dans la base.
 
 Pour charger les shapefiles, vous pouvez aussi utiliser l'utilitaire _shp2pgsql-gui_.
 
@@ -72,7 +72,7 @@ Elle apporte :
 * des tables et vues nécessaires au bon fonctionnement de PostGIS
 
 
-#### Installation de PostGIS sous linux
+### Installation de PostGIS sous linux
 
 Dans un environnement Linux, l'installation est très facile. Il suffit d'installer les paquets disponibles pour votre distribution. Exemple sous Ubuntu :
 
@@ -96,7 +96,7 @@ createdb test
 > Rappel: PostgreSQL est un serveur de base de données, il est installé sur une machine et agit comme un service, attendant des requêtes qui lui sont envoyées.
 
 
-#### Installation de PostGIS sous windows
+### Installation de PostGIS sous windows
 
 Sous Windows, EnterpriseDB fournit un [binaire](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads). Le programme vous invite à installer PostgreSQL. A l'issue de l'installation, un programme annexe vous proposera d'installer des logiciels tierces. Vous y choisirez PostGIS. Suivez les étapes d'installations. Si tout se passe bien, vous devriez voir apparaître un nouveau service postgresql.
 

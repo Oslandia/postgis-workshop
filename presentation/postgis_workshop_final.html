@@ -113,6 +113,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sommaire-2">
 <a href="#postgis-quest-ce-que-cest">2.1 PostGIS, qu’est-ce que c’est ?</a>
 </div>
+<div class="sommaire-2">
+<a href="#installation-de-postgis-sous-linux">2.2 Installation de PostGIS sous linux</a>
+</div>
+<div class="sommaire-2">
+<a href="#installation-de-postgis-sous-windows">2.3 Installation de PostGIS sous windows</a>
+</div>
 <div class="sommaire-1">
 <a href="#postgis-introduction">3 PostGIS: introduction</a>
 </div>
@@ -279,7 +285,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb1-4" data-line-number="4">$ <span class="fu">unzip</span> -o postgis-workshop-master.zip -d workshop</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">$ <span class="bu">cd</span> workshop/postgis-workshop-master</a></code></pre></div>
 <p>La première étape est de créer la base de données et de charger les données</p>
-<p>Lancez les 3 scripts contenus dans le répertoire <em>scripts</em> pour créer la base, télécharger le jeu de test, et charger les données dans la base.</p>
+<p>Lancez les 3 scripts contenus dans le répertoire <em>scripts</em> pour créer la base, téléchargez le jeu de test, et chargez les données dans la base.</p>
 <p>Pour charger les shapefiles, vous pouvez aussi utiliser l’utilitaire <em>shp2pgsql-gui</em>.</p>
 <p>Vous pouvez relancer les scripts si une erreur se produit pendant l’exécution.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1">$ <span class="bu">cd</span> scripts</a>
@@ -296,7 +302,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>des fonctions de manipulation de donnée (géométrique)</li>
 <li>des tables et vues nécessaires au bon fonctionnement de PostGIS</li>
 </ul>
-<h4 id="installation-de-postgis-sous-linux">Installation de PostGIS sous linux</h4>
+<h3 id="installation-de-postgis-sous-linux">2.2 Installation de PostGIS sous linux</h3>
 <p>Dans un environnement Linux, l’installation est très facile. Il suffit d’installer les paquets disponibles pour votre distribution. Exemple sous Ubuntu :</p>
 <pre><code>sudo apt-get install postgresql-10-postgis-2.4</code></pre>
 <p>A l’issue de l’installation, un serveur PostgreSQL tournera sur votre machine et PostGIS sera disponible. Un utilisateur système <strong>postgres</strong> sera également disponible et vous permettra d’effectuer des opération d’administration sur votre serveur PostgreSQL.</p>
@@ -309,7 +315,7 @@ createdb test</code></pre>
 <blockquote>
 <p>Rappel: PostgreSQL est un serveur de base de données, il est installé sur une machine et agit comme un service, attendant des requêtes qui lui sont envoyées.</p>
 </blockquote>
-<h4 id="installation-de-postgis-sous-windows">Installation de PostGIS sous windows</h4>
+<h3 id="installation-de-postgis-sous-windows">2.3 Installation de PostGIS sous windows</h3>
 <p>Sous Windows, EnterpriseDB fournit un <a href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads">binaire</a>. Le programme vous invite à installer PostgreSQL. A l’issue de l’installation, un programme annexe vous proposera d’installer des logiciels tierces. Vous y choisirez PostGIS. Suivez les étapes d’installations. Si tout se passe bien, vous devriez voir apparaître un nouveau service postgresql.</p>
 <blockquote>
 <p>Note: sous windows, il sera nécessaire de saisir un mot de passe pour l’utilisateur système postgres (ce n’est pas le cas sous linux)</p>
