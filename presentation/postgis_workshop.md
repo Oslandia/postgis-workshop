@@ -26,7 +26,7 @@ $$$sommaire
 
 Commencez par télécharger la dernière version de ce workshop :
 
-https://github.com/Oslandia/postgis-workshop/archive/master.zip
+[https://github.com/Oslandia/postgis-workshop/archive/master.zip](https://github.com/Oslandia/postgis-workshop/archive/master.zip)
 
 Sauvegardez le zip dans votre répertoire home et décompressez le dans un répertoire _workshop_.
 
