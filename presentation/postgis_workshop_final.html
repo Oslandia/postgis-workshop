@@ -255,25 +255,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a href="#accesseurs">10 Accesseurs</a>
 </div>
 <div class="sommaire-1">
-<a href="#type-geography">11 Type Geography</a>
+<a href="#analyses">11 Analyses</a>
+</div>
+<div class="sommaire-2">
+<a href="#st_intersects-intersections-de-géométries">11.1 ST_Intersects (intersections de géométries)</a>
+</div>
+<div class="sommaire-2">
+<a href="#généralisation">11.2 Généralisation</a>
+</div>
+<div class="sommaire-2">
+<a href="#recherche-par-buffer">11.3 Recherche par buffer</a>
+</div>
+<div class="sommaire-2">
+<a href="#plus-proches-voisins">11.4 Plus proches voisins</a>
+</div>
+<div class="sommaire-2">
+<a href="#référencement-linéaire">11.5 Référencement linéaire</a>
 </div>
 <div class="sommaire-1">
-<a href="#analyses">12 Analyses</a>
-</div>
-<div class="sommaire-2">
-<a href="#st_intersects-intersections-de-géométries">12.1 ST_Intersects (intersections de géométries)</a>
-</div>
-<div class="sommaire-2">
-<a href="#généralisation">12.2 Généralisation</a>
-</div>
-<div class="sommaire-2">
-<a href="#recherche-par-buffer">12.3 Recherche par buffer</a>
-</div>
-<div class="sommaire-2">
-<a href="#plus-proches-voisins">12.4 Plus proches voisins</a>
-</div>
-<div class="sommaire-2">
-<a href="#référencement-linéaire">12.5 Référencement linéaire</a>
+<a href="#type-geography">12 Type Geography</a>
 </div>
 <h2 id="pour-bien-commencer">2 Pour bien commencer</h2>
 <p>Commencez par télécharger la dernière version de ce workshop :</p>
@@ -882,107 +882,66 @@ psql -d NOM_BASE &lt; sql_file.sql</code></pre>
 <li>Testez les résultats sur ce site : http://geojsonlint.com/</li>
 <li>Affichez les résultats sur une carte en utilisant par exemple : http://geojson.io</li>
 </ul>
-<h2 id="type-geography">11 Type Geography</h2>
-<p>La terre n’est pas plate, et on veut parfois ne pas travailler dans un système de projection. Pour cela, PostGIS propose un type <strong>geography</strong>.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw">create</span> <span class="kw">table</span> capitals (</a>
-<a class="sourceLine" id="cb50-2" data-line-number="2">    <span class="kw">id</span> serial,</a>
-<a class="sourceLine" id="cb50-3" data-line-number="3">    name <span class="dt">varchar</span>,</a>
-<a class="sourceLine" id="cb50-4" data-line-number="4">    geom geography(POINT,<span class="dv">4326</span>)</a>
-<a class="sourceLine" id="cb50-5" data-line-number="5">);</a></code></pre></div>
-<p>Limitations :</p>
-<ul>
-<li>Latitude/Longitude seulement (SRID:4326 si PostGIS &lt; 2.1.6)</li>
-<li>pas toutes les fonctions PostGIS implémentées</li>
-<li>fonctionne avec tous les standards OGC sauf les courbes (*CURVES)</li>
-</ul>
-<p>Petit exercice pratique sur le type géographique, nous allons prendre l’exemple connu d’un avion faisant le trajet Paris / Los Angeles. A combien de Km passe-t-il de l’Islande ?</p>
-<p>Ecrivez la requête permettant de calculer la distance entre une ligne de coordonnées -118.4079 33.9434, 2.5559 49.0083 et un point de coordonnées 2.5559 49.0083. Exprimez le résultat en projection mercator (SRID = 3857).</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb51-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb51-2" data-line-number="2"><span class="co">-- Requête en prenant la projection mercator :</span></a>
-<a class="sourceLine" id="cb51-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb51-4" data-line-number="4"><span class="kw">SELECT</span> ST_Distance(</a>
-<a class="sourceLine" id="cb51-5" data-line-number="5">  ST_transform(ST_GeomFromText(<span class="st">&#39;LINESTRING(-118.4079 33.9434, 2.5559 49.0083)&#39;</span>, <span class="dv">4326</span>), <span class="dv">3857</span>),</a>
-<a class="sourceLine" id="cb51-6" data-line-number="6">  ST_transform(ST_GeomFromText(<span class="st">&#39;POINT(-21.8628 64.1286)&#39;</span>, <span class="dv">4326</span>), <span class="dv">3857</span>)</a>
-<a class="sourceLine" id="cb51-7" data-line-number="7">);</a></code></pre></div>
-<p>Ecrivez la même requête en utilisant cette fois-ci le type geography (il faut donc utiliser la fonction <a href="https://postgis.net/docs/ST_GeographyFromText.html">ST_GeographyFromText</a> ou l’opérateur de CAST ::geography).</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb52-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb52-2" data-line-number="2"><span class="co">-- Avec le type geography :</span></a>
-<a class="sourceLine" id="cb52-3" data-line-number="3"><span class="co">-- Distance entre une ligne Paris/ Los Angeles, et l&#39;Islande</span></a>
-<a class="sourceLine" id="cb52-4" data-line-number="4"><span class="kw">SELECT</span> ST_Distance(</a>
-<a class="sourceLine" id="cb52-5" data-line-number="5">  ST_GeographyFromText(<span class="st">&#39;LINESTRING(-118.4079 33.9434, 2.5559 49.0083)&#39;</span>), <span class="co">-- LAX-CDG</span></a>
-<a class="sourceLine" id="cb52-6" data-line-number="6">  ST_GeographyFromText(<span class="st">&#39;POINT(-21.8628 64.1286)&#39;</span>)                        <span class="co">-- Iceland</span></a>
-<a class="sourceLine" id="cb52-7" data-line-number="7">);</a>
-<a class="sourceLine" id="cb52-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb52-9" data-line-number="9"><span class="co">-- ou</span></a>
-<a class="sourceLine" id="cb52-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb52-11" data-line-number="11"><span class="kw">SELECT</span> ST_Distance(</a>
-<a class="sourceLine" id="cb52-12" data-line-number="12">  ST_GeomFromText(<span class="st">&#39;LINESTRING(-118.4079 33.9434, 2.5559 49.0083)&#39;</span>):<span class="ch">:geography</span>, <span class="co">-- LAX-CDG</span></a>
-<a class="sourceLine" id="cb52-13" data-line-number="13">  ST_GeomFromText(<span class="st">&#39;POINT(-21.8628 64.1286)&#39;</span>):<span class="ch">:geography</span>                        <span class="co">-- Iceland</span></a>
-<a class="sourceLine" id="cb52-14" data-line-number="14">);</a></code></pre></div>
-<p>On voit que la distance retournée quand on fonctionne en mode geography est plus beaucoup courte que celle calculée en projection L93. Elle tient compte du fait que la terre n’est pas plate.</p>
-<figure>
-<img src="./assets/img/lax_cdg.jpg" title="Différence geometry / geography" alt="Geography" /><figcaption>Geography</figcaption>
-</figure>
-<h2 id="analyses">12 Analyses</h2>
-<h3 id="st_intersects-intersections-de-géométries">12.1 ST_Intersects (intersections de géométries)</h3>
+<h2 id="analyses">11 Analyses</h2>
+<h3 id="st_intersects-intersections-de-géométries">11.1 ST_Intersects (intersections de géométries)</h3>
 <p>L’une des opérations les plus courantes lorsqu’on manipule des objets géométriques est l’intersection spatiale. Comment trouver un ensemble de points à l’intérieur d’un polygone ? Est-ce que ces deux polygones se superposent ? Cette ligne passe-t-elle au travers de ce polygone ? PostGIS propose pour cela la fonction <a href="https://postgis.net/docs/ST_Intersects.html">ST_Intersects</a>.</p>
 <figure>
 <img src="./assets/img/intersection.png" title="Intersection" alt="Intersection" /><figcaption>Intersection</figcaption>
 </figure>
 <p>Comment trouver par exemple les points de la table <strong>poi</strong> contenus dans un polygone spécifique de la table <strong>poly</strong> ?</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">select</span> p1.*</a>
-<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="kw">from</span> poi p1, poly p2</a>
-<a class="sourceLine" id="cb53-3" data-line-number="3"><span class="kw">where</span> ST_Intersects(p1.geom, p2.geom)</a>
-<a class="sourceLine" id="cb53-4" data-line-number="4"><span class="kw">and</span> p2.id = <span class="dv">1</span>;</a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw">select</span> p1.*</a>
+<a class="sourceLine" id="cb50-2" data-line-number="2"><span class="kw">from</span> poi p1, poly p2</a>
+<a class="sourceLine" id="cb50-3" data-line-number="3"><span class="kw">where</span> ST_Intersects(p1.geom, p2.geom)</a>
+<a class="sourceLine" id="cb50-4" data-line-number="4"><span class="kw">and</span> p2.id = <span class="dv">1</span>;</a></code></pre></div>
 <p>Cette requête retourne la liste des points qui “intersectent” le polygone dont l’id est égal à 1.</p>
 <blockquote>
 <p>Note: La fonction ST_intersects renvoie TRUE ou FALSE (et non une géométrie). Sa place est donc le plus souvent dans le <strong>where</strong> de la requête.</p>
 </blockquote>
 <p>Récupérons toutes les communes traversées par une rivière, ordonnées de la première à la dernière :</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">WITH</span> rhone <span class="kw">AS</span></a>
+<a class="sourceLine" id="cb51-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb51-3" data-line-number="3">  <span class="kw">SELECT</span> geom</a>
+<a class="sourceLine" id="cb51-4" data-line-number="4">  <span class="kw">FROM</span> hydro.cours_eau</a>
+<a class="sourceLine" id="cb51-5" data-line-number="5">  <span class="kw">WHERE</span> code_hydro = <span class="st">&#39;V---0000&#39;</span>  <span class="co">-- Code hydrologique du Rhone</span></a>
+<a class="sourceLine" id="cb51-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb51-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb51-8" data-line-number="8"><span class="kw">SELECT</span> nom_com</a>
+<a class="sourceLine" id="cb51-9" data-line-number="9"><span class="kw">FROM</span> admin.commune <span class="kw">AS</span> c, rhone <span class="kw">AS</span> r</a>
+<a class="sourceLine" id="cb51-10" data-line-number="10"><span class="kw">WHERE</span> ST_Intersects(c.geom, r.geom)</a>
+<a class="sourceLine" id="cb51-11" data-line-number="11"><span class="kw">ORDER</span> <span class="kw">BY</span> ST_LineLocatePoint(</a>
+<a class="sourceLine" id="cb51-12" data-line-number="12">    ST_LineMerge(r.geom),</a>
+<a class="sourceLine" id="cb51-13" data-line-number="13">    ST_ClosestPoint(r.geom, c.geom))</a>
+<a class="sourceLine" id="cb51-14" data-line-number="14">;</a></code></pre></div>
+<p>Utilisons la reprojection à la volée et visualisons le résultat sous QGIS :</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">SELECT</span>  (<span class="fu">row_number</span>() <span class="kw">OVER</span> ()):<span class="ch">:integer</span> <span class="kw">AS</span> gid,</a>
+<a class="sourceLine" id="cb52-2" data-line-number="2">        ST_Transform(ST_SetSRID(</a>
+<a class="sourceLine" id="cb52-3" data-line-number="3">            ST_MakePoint(longitude_wgs84, latitude_wgs84), <span class="dv">4326</span>), <span class="dv">2154</span></a>
+<a class="sourceLine" id="cb52-4" data-line-number="4">        ) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb52-5" data-line-number="5"><span class="kw">FROM</span> rff.station;</a></code></pre></div>
+<p>Toute donnée spatiale doit être associé à une projection (code SRID). PostGIS ne fera jamais implictement de conversion de projections. Vous devez toujours le faire de manière explicite.</p>
+<p><a href="https://postgis.net/docs/ST_Transform.html">ST_Transform</a> vous permet de convertir des géométries d’une projection vers une autre.</p>
+<h3 id="généralisation">11.2 Généralisation</h3>
+<p>Généralisation de données = simplification de géométries :</p>
+<p><a href="https://postgis.net/docs/ST_Simplify.html">ST_Simplify</a> renvoie une version simplifiée d’une géométrie.</p>
+<p>St_Simplify utilise l’algorithme Douglas-Peuker.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">SELECT</span> ST_AsGeoJSON(</a>
+<a class="sourceLine" id="cb53-2" data-line-number="2">    ST_Transform(</a>
+<a class="sourceLine" id="cb53-3" data-line-number="3">        ST_Simplify(geom, <span class="dv">800</span>),</a>
+<a class="sourceLine" id="cb53-4" data-line-number="4">        <span class="dv">4326</span>), <span class="dv">5</span></a>
+<a class="sourceLine" id="cb53-5" data-line-number="5">    )</a>
+<a class="sourceLine" id="cb53-6" data-line-number="6"><span class="kw">FROM</span> commune;</a></code></pre></div>
+<figure>
+<img src="./assets/img/geojson.png" title="Geojson" alt="Geojson" /><figcaption>Geojson</figcaption>
+</figure>
 <div class="sourceCode" id="cb54"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">WITH</span> rhone <span class="kw">AS</span></a>
 <a class="sourceLine" id="cb54-2" data-line-number="2">(</a>
-<a class="sourceLine" id="cb54-3" data-line-number="3">  <span class="kw">SELECT</span> geom</a>
+<a class="sourceLine" id="cb54-3" data-line-number="3">  <span class="kw">SELECT</span> ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), <span class="dv">2</span>)) <span class="kw">AS</span> geom</a>
 <a class="sourceLine" id="cb54-4" data-line-number="4">  <span class="kw">FROM</span> hydro.cours_eau</a>
 <a class="sourceLine" id="cb54-5" data-line-number="5">  <span class="kw">WHERE</span> code_hydro = <span class="st">&#39;V---0000&#39;</span>  <span class="co">-- Code hydrologique du Rhone</span></a>
 <a class="sourceLine" id="cb54-6" data-line-number="6">)</a>
 <a class="sourceLine" id="cb54-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb54-8" data-line-number="8"><span class="kw">SELECT</span> nom_com</a>
-<a class="sourceLine" id="cb54-9" data-line-number="9"><span class="kw">FROM</span> admin.commune <span class="kw">AS</span> c, rhone <span class="kw">AS</span> r</a>
-<a class="sourceLine" id="cb54-10" data-line-number="10"><span class="kw">WHERE</span> ST_Intersects(c.geom, r.geom)</a>
-<a class="sourceLine" id="cb54-11" data-line-number="11"><span class="kw">ORDER</span> <span class="kw">BY</span> ST_LineLocatePoint(</a>
-<a class="sourceLine" id="cb54-12" data-line-number="12">    ST_LineMerge(r.geom),</a>
-<a class="sourceLine" id="cb54-13" data-line-number="13">    ST_ClosestPoint(r.geom, c.geom))</a>
-<a class="sourceLine" id="cb54-14" data-line-number="14">;</a></code></pre></div>
-<p>Utilisons la reprojection à la volée et visualisons le résultat sous QGIS :</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">SELECT</span>  (<span class="fu">row_number</span>() <span class="kw">OVER</span> ()):<span class="ch">:integer</span> <span class="kw">AS</span> gid,</a>
-<a class="sourceLine" id="cb55-2" data-line-number="2">        ST_Transform(ST_SetSRID(</a>
-<a class="sourceLine" id="cb55-3" data-line-number="3">            ST_MakePoint(longitude_wgs84, latitude_wgs84), <span class="dv">4326</span>), <span class="dv">2154</span></a>
-<a class="sourceLine" id="cb55-4" data-line-number="4">        ) <span class="kw">AS</span> geom</a>
-<a class="sourceLine" id="cb55-5" data-line-number="5"><span class="kw">FROM</span> rff.station;</a></code></pre></div>
-<p>Toute donnée spatiale doit être associé à une projection (code SRID). PostGIS ne fera jamais implictement de conversion de projections. Vous devez toujours le faire de manière explicite.</p>
-<p><a href="https://postgis.net/docs/ST_Transform.html">ST_Transform</a> vous permet de convertir des géométries d’une projection vers une autre.</p>
-<h3 id="généralisation">12.2 Généralisation</h3>
-<p>Généralisation de données = simplification de géométries :</p>
-<p><a href="https://postgis.net/docs/ST_Simplify.html">ST_Simplify</a> renvoie une version simplifiée d’une géométrie.</p>
-<p>St_Simplify utilise l’algorithme Douglas-Peuker.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">SELECT</span> ST_AsGeoJSON(</a>
-<a class="sourceLine" id="cb56-2" data-line-number="2">    ST_Transform(</a>
-<a class="sourceLine" id="cb56-3" data-line-number="3">        ST_Simplify(geom, <span class="dv">800</span>),</a>
-<a class="sourceLine" id="cb56-4" data-line-number="4">        <span class="dv">4326</span>), <span class="dv">5</span></a>
-<a class="sourceLine" id="cb56-5" data-line-number="5">    )</a>
-<a class="sourceLine" id="cb56-6" data-line-number="6"><span class="kw">FROM</span> commune;</a></code></pre></div>
-<figure>
-<img src="./assets/img/geojson.png" title="Geojson" alt="Geojson" /><figcaption>Geojson</figcaption>
-</figure>
-<div class="sourceCode" id="cb57"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="kw">WITH</span> rhone <span class="kw">AS</span></a>
-<a class="sourceLine" id="cb57-2" data-line-number="2">(</a>
-<a class="sourceLine" id="cb57-3" data-line-number="3">  <span class="kw">SELECT</span> ST_LineMerge(ST_CollectionExtract(ST_Collect(geom), <span class="dv">2</span>)) <span class="kw">AS</span> geom</a>
-<a class="sourceLine" id="cb57-4" data-line-number="4">  <span class="kw">FROM</span> hydro.cours_eau</a>
-<a class="sourceLine" id="cb57-5" data-line-number="5">  <span class="kw">WHERE</span> code_hydro = <span class="st">&#39;V---0000&#39;</span>  <span class="co">-- Code hydrologique du Rhone</span></a>
-<a class="sourceLine" id="cb57-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb57-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb57-8" data-line-number="8"><span class="kw">SELECT</span> <span class="dv">1</span>:<span class="ch">:integer</span> <span class="kw">AS</span> gid, ST_Simplify(geom, <span class="dv">250</span>) <span class="kw">AS</span> geom</a>
-<a class="sourceLine" id="cb57-9" data-line-number="9"><span class="kw">FROM</span> rhone;</a></code></pre></div>
+<a class="sourceLine" id="cb54-8" data-line-number="8"><span class="kw">SELECT</span> <span class="dv">1</span>:<span class="ch">:integer</span> <span class="kw">AS</span> gid, ST_Simplify(geom, <span class="dv">250</span>) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb54-9" data-line-number="9"><span class="kw">FROM</span> rhone;</a></code></pre></div>
 <ul>
 <li>Affichez la données dans QGIS</li>
 <li>Changez progressivement la tolérance de la fonction simplify</li>
@@ -992,74 +951,74 @@ psql -d NOM_BASE &lt; sql_file.sql</code></pre>
 <li>Généralisation</li>
 <li>Soucis topologiques</li>
 </ul>
-<h3 id="recherche-par-buffer">12.3 Recherche par buffer</h3>
+<h3 id="recherche-par-buffer">11.3 Recherche par buffer</h3>
 <p>Récupérons les communes situées à 50km du centre de Toulouse :</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">SELECT</span> gid, nom_com, geom</a>
-<a class="sourceLine" id="cb58-2" data-line-number="2"><span class="kw">FROM</span> admin.commune</a>
-<a class="sourceLine" id="cb58-3" data-line-number="3"><span class="kw">WHERE</span> ST_Intersects(geom,</a>
-<a class="sourceLine" id="cb58-4" data-line-number="4"> (<span class="kw">SELECT</span> ST_Buffer(ST_Centroid(geom), <span class="dv">50000</span>)</a>
-<a class="sourceLine" id="cb58-5" data-line-number="5">  <span class="kw">FROM</span> admin.commune</a>
-<a class="sourceLine" id="cb58-6" data-line-number="6">  <span class="kw">WHERE</span> nom_com = <span class="st">&#39;TOULOUSE&#39;</span></a>
-<a class="sourceLine" id="cb58-7" data-line-number="7"> ));</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">SELECT</span> gid, nom_com, geom</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2"><span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb55-3" data-line-number="3"><span class="kw">WHERE</span> ST_Intersects(geom,</a>
+<a class="sourceLine" id="cb55-4" data-line-number="4"> (<span class="kw">SELECT</span> ST_Buffer(ST_Centroid(geom), <span class="dv">50000</span>)</a>
+<a class="sourceLine" id="cb55-5" data-line-number="5">  <span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb55-6" data-line-number="6">  <span class="kw">WHERE</span> nom_com = <span class="st">&#39;TOULOUSE&#39;</span></a>
+<a class="sourceLine" id="cb55-7" data-line-number="7"> ));</a></code></pre></div>
 <p>La même chose en utilisant une CTE, avec de bonnes performances :</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">WITH</span> toulouse_50km <span class="kw">AS</span></a>
-<a class="sourceLine" id="cb59-2" data-line-number="2">(</a>
-<a class="sourceLine" id="cb59-3" data-line-number="3">  <span class="kw">SELECT</span> ST_Buffer(ST_Centroid(geom), <span class="dv">50000</span>) <span class="kw">AS</span> geom</a>
-<a class="sourceLine" id="cb59-4" data-line-number="4">  <span class="kw">FROM</span> admin.commune</a>
-<a class="sourceLine" id="cb59-5" data-line-number="5">  <span class="kw">WHERE</span> nom_com = <span class="st">&#39;TOULOUSE&#39;</span></a>
-<a class="sourceLine" id="cb59-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb59-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb59-8" data-line-number="8"><span class="kw">SELECT</span> gid, nom_com, c.geom</a>
-<a class="sourceLine" id="cb59-9" data-line-number="9"><span class="kw">FROM</span> admin.commune <span class="kw">AS</span> c, toulouse_50km <span class="kw">AS</span> t</a>
-<a class="sourceLine" id="cb59-10" data-line-number="10"><span class="kw">WHERE</span> ST_Intersects(c.geom, t.geom);</a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">WITH</span> toulouse_50km <span class="kw">AS</span></a>
+<a class="sourceLine" id="cb56-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb56-3" data-line-number="3">  <span class="kw">SELECT</span> ST_Buffer(ST_Centroid(geom), <span class="dv">50000</span>) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb56-4" data-line-number="4">  <span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb56-5" data-line-number="5">  <span class="kw">WHERE</span> nom_com = <span class="st">&#39;TOULOUSE&#39;</span></a>
+<a class="sourceLine" id="cb56-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb56-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb56-8" data-line-number="8"><span class="kw">SELECT</span> gid, nom_com, c.geom</a>
+<a class="sourceLine" id="cb56-9" data-line-number="9"><span class="kw">FROM</span> admin.commune <span class="kw">AS</span> c, toulouse_50km <span class="kw">AS</span> t</a>
+<a class="sourceLine" id="cb56-10" data-line-number="10"><span class="kw">WHERE</span> ST_Intersects(c.geom, t.geom);</a></code></pre></div>
 <p>La même chose mais avec des performances dégradées à cause ST_buffer imbriquée dans ST_Intersects :</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">WITH</span> toulouse <span class="kw">AS</span></a>
-<a class="sourceLine" id="cb60-2" data-line-number="2">(</a>
-<a class="sourceLine" id="cb60-3" data-line-number="3">  <span class="kw">SELECT</span> ST_Centroid(geom) <span class="kw">AS</span> geom</a>
-<a class="sourceLine" id="cb60-4" data-line-number="4">  <span class="kw">FROM</span> admin.commune</a>
-<a class="sourceLine" id="cb60-5" data-line-number="5">  <span class="kw">WHERE</span> nom_com = <span class="st">&#39;TOULOUSE&#39;</span></a>
-<a class="sourceLine" id="cb60-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb60-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb60-8" data-line-number="8"><span class="kw">SELECT</span> gid, nom_com, c.geom</a>
-<a class="sourceLine" id="cb60-9" data-line-number="9"><span class="kw">FROM</span> admin.commune <span class="kw">AS</span> c, toulouse <span class="kw">AS</span> t</a>
-<a class="sourceLine" id="cb60-10" data-line-number="10"><span class="kw">WHERE</span> ST_Intersects(c.geom, ST_Buffer(t.geom, <span class="dv">50000</span>));</a></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="kw">WITH</span> toulouse <span class="kw">AS</span></a>
+<a class="sourceLine" id="cb57-2" data-line-number="2">(</a>
+<a class="sourceLine" id="cb57-3" data-line-number="3">  <span class="kw">SELECT</span> ST_Centroid(geom) <span class="kw">AS</span> geom</a>
+<a class="sourceLine" id="cb57-4" data-line-number="4">  <span class="kw">FROM</span> admin.commune</a>
+<a class="sourceLine" id="cb57-5" data-line-number="5">  <span class="kw">WHERE</span> nom_com = <span class="st">&#39;TOULOUSE&#39;</span></a>
+<a class="sourceLine" id="cb57-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb57-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb57-8" data-line-number="8"><span class="kw">SELECT</span> gid, nom_com, c.geom</a>
+<a class="sourceLine" id="cb57-9" data-line-number="9"><span class="kw">FROM</span> admin.commune <span class="kw">AS</span> c, toulouse <span class="kw">AS</span> t</a>
+<a class="sourceLine" id="cb57-10" data-line-number="10"><span class="kw">WHERE</span> ST_Intersects(c.geom, ST_Buffer(t.geom, <span class="dv">50000</span>));</a></code></pre></div>
 <p>Une dernière, avec la fonction <em>ST_Dwithin</em> :</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">select</span></a>
-<a class="sourceLine" id="cb61-2" data-line-number="2">    t1.*</a>
-<a class="sourceLine" id="cb61-3" data-line-number="3"><span class="kw">from</span></a>
-<a class="sourceLine" id="cb61-4" data-line-number="4">    admin.commune <span class="kw">as</span> t1</a>
-<a class="sourceLine" id="cb61-5" data-line-number="5"><span class="kw">join</span></a>
-<a class="sourceLine" id="cb61-6" data-line-number="6">    admin.commune <span class="kw">as</span> t2</a>
-<a class="sourceLine" id="cb61-7" data-line-number="7"><span class="kw">on</span></a>
-<a class="sourceLine" id="cb61-8" data-line-number="8">    ST_DWithin(t1.geom, ST_Centroid(t2.geom), <span class="dv">50000</span>)</a>
-<a class="sourceLine" id="cb61-9" data-line-number="9"><span class="kw">where</span></a>
-<a class="sourceLine" id="cb61-10" data-line-number="10">    t2.nom_com = <span class="st">&#39;TOULOUSE&#39;</span>;</a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">select</span></a>
+<a class="sourceLine" id="cb58-2" data-line-number="2">    t1.*</a>
+<a class="sourceLine" id="cb58-3" data-line-number="3"><span class="kw">from</span></a>
+<a class="sourceLine" id="cb58-4" data-line-number="4">    admin.commune <span class="kw">as</span> t1</a>
+<a class="sourceLine" id="cb58-5" data-line-number="5"><span class="kw">join</span></a>
+<a class="sourceLine" id="cb58-6" data-line-number="6">    admin.commune <span class="kw">as</span> t2</a>
+<a class="sourceLine" id="cb58-7" data-line-number="7"><span class="kw">on</span></a>
+<a class="sourceLine" id="cb58-8" data-line-number="8">    ST_DWithin(t1.geom, ST_Centroid(t2.geom), <span class="dv">50000</span>)</a>
+<a class="sourceLine" id="cb58-9" data-line-number="9"><span class="kw">where</span></a>
+<a class="sourceLine" id="cb58-10" data-line-number="10">    t2.nom_com = <span class="st">&#39;TOULOUSE&#39;</span>;</a></code></pre></div>
 <p>A propos de la requête :</p>
 <ul>
 <li>Les index et les opérateurs spatiaux peuvent améliorer grandement les performances</li>
 </ul>
-<h3 id="plus-proches-voisins">12.4 Plus proches voisins</h3>
+<h3 id="plus-proches-voisins">11.4 Plus proches voisins</h3>
 <p>Les grandes communes sont généralement situées le long des grands fleuves. Trouvons pour chaque grande commune la plus proche rivière :</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">SELECT</span> c.nom_com,</a>
-<a class="sourceLine" id="cb62-2" data-line-number="2">       c.population <span class="kw">AS</span> population,</a>
-<a class="sourceLine" id="cb62-3" data-line-number="3">       r.toponyme,</a>
-<a class="sourceLine" id="cb62-4" data-line-number="4">       ST_Distance(r.geom, c.geom) <span class="kw">AS</span> dist</a>
-<a class="sourceLine" id="cb62-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb62-6" data-line-number="6"><span class="kw">FROM</span> admin.commune <span class="kw">AS</span> c,</a>
-<a class="sourceLine" id="cb62-7" data-line-number="7">     hydro.cours_eau <span class="kw">AS</span> r</a>
-<a class="sourceLine" id="cb62-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb62-9" data-line-number="9"><span class="kw">WHERE</span> r.classe = <span class="st">&#39;1&#39;</span> <span class="co">-- uniquement les grandes rivières</span></a>
-<a class="sourceLine" id="cb62-10" data-line-number="10"><span class="kw">AND</span>   r.toponyme <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></a>
-<a class="sourceLine" id="cb62-11" data-line-number="11"><span class="kw">AND</span>   (c.population) &gt; <span class="dv">200000</span></a>
-<a class="sourceLine" id="cb62-12" data-line-number="12"><span class="kw">AND</span>   r.geom &amp;&amp; ST_Expand(c.geom, <span class="dv">10000</span>)</a>
-<a class="sourceLine" id="cb62-13" data-line-number="13"><span class="kw">ORDER</span> <span class="kw">BY</span> r.geom &lt;-&gt; c.geom; <span class="co">-- distance</span></a></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">SELECT</span> c.nom_com,</a>
+<a class="sourceLine" id="cb59-2" data-line-number="2">       c.population <span class="kw">AS</span> population,</a>
+<a class="sourceLine" id="cb59-3" data-line-number="3">       r.toponyme,</a>
+<a class="sourceLine" id="cb59-4" data-line-number="4">       ST_Distance(r.geom, c.geom) <span class="kw">AS</span> dist</a>
+<a class="sourceLine" id="cb59-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb59-6" data-line-number="6"><span class="kw">FROM</span> admin.commune <span class="kw">AS</span> c,</a>
+<a class="sourceLine" id="cb59-7" data-line-number="7">     hydro.cours_eau <span class="kw">AS</span> r</a>
+<a class="sourceLine" id="cb59-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb59-9" data-line-number="9"><span class="kw">WHERE</span> r.classe = <span class="st">&#39;1&#39;</span> <span class="co">-- uniquement les grandes rivières</span></a>
+<a class="sourceLine" id="cb59-10" data-line-number="10"><span class="kw">AND</span>   r.toponyme <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></a>
+<a class="sourceLine" id="cb59-11" data-line-number="11"><span class="kw">AND</span>   (c.population) &gt; <span class="dv">200000</span></a>
+<a class="sourceLine" id="cb59-12" data-line-number="12"><span class="kw">AND</span>   r.geom &amp;&amp; ST_Expand(c.geom, <span class="dv">10000</span>)</a>
+<a class="sourceLine" id="cb59-13" data-line-number="13"><span class="kw">ORDER</span> <span class="kw">BY</span> r.geom &lt;-&gt; c.geom; <span class="co">-- distance</span></a></code></pre></div>
 <p>A propos de la requête :</p>
 <ul>
 <li>Bbox et geometrie</li>
 <li>Opérateur d’intersection &amp;&amp;</li>
 <li>Opérateur KNN &lt;#&gt; et &lt;-&gt;</li>
 </ul>
-<h3 id="référencement-linéaire">12.5 Référencement linéaire</h3>
+<h3 id="référencement-linéaire">11.5 Référencement linéaire</h3>
 <p>Fonctions de référencement Linéaire (cas de tronçons routiers)</p>
 <figure>
 <img src="./assets/img/interpolation_lineaire.png" title="Interpolation lineaire" alt="Interpolation linéaire" /><figcaption>Interpolation linéaire</figcaption>
@@ -1070,5 +1029,46 @@ psql -d NOM_BASE &lt; sql_file.sql</code></pre>
 <li><a href="http://postgis.net/docs/manual-2.1/ST_Line_Locate_Point.html">ST_line_locate_point(LineString, Point)</a></li>
 <li><a href="https://postgis.net/docs/manual-1.4/ST_Locate_Along_Measure.html">ST_locate_along_measure(geometry, float8)</a></li>
 </ul>
+<h2 id="type-geography">12 Type Geography</h2>
+<p>La terre n’est pas plate, et on veut parfois ne pas travailler dans un système de projection. Pour cela, PostGIS propose un type <strong>geography</strong>.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">create</span> <span class="kw">table</span> capitals (</a>
+<a class="sourceLine" id="cb60-2" data-line-number="2">    <span class="kw">id</span> serial,</a>
+<a class="sourceLine" id="cb60-3" data-line-number="3">    name <span class="dt">varchar</span>,</a>
+<a class="sourceLine" id="cb60-4" data-line-number="4">    geom geography(POINT,<span class="dv">4326</span>)</a>
+<a class="sourceLine" id="cb60-5" data-line-number="5">);</a></code></pre></div>
+<p>Limitations :</p>
+<ul>
+<li>Latitude/Longitude seulement (SRID:4326 si PostGIS &lt; 2.1.6)</li>
+<li>pas toutes les fonctions PostGIS implémentées</li>
+<li>fonctionne avec tous les standards OGC sauf les courbes (*CURVES)</li>
+</ul>
+<p>Petit exercice pratique sur le type géographique, nous allons prendre l’exemple connu d’un avion faisant le trajet Paris / Los Angeles. A combien de Km passe-t-il de l’Islande ?</p>
+<p>Ecrivez la requête permettant de calculer la distance entre une ligne de coordonnées -118.4079 33.9434, 2.5559 49.0083 et un point de coordonnées 2.5559 49.0083. Exprimez le résultat en projection mercator (SRID = 3857).</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb61-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb61-2" data-line-number="2"><span class="co">-- Requête en prenant la projection mercator :</span></a>
+<a class="sourceLine" id="cb61-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb61-4" data-line-number="4"><span class="kw">SELECT</span> ST_Distance(</a>
+<a class="sourceLine" id="cb61-5" data-line-number="5">  ST_transform(ST_GeomFromText(<span class="st">&#39;LINESTRING(-118.4079 33.9434, 2.5559 49.0083)&#39;</span>, <span class="dv">4326</span>), <span class="dv">3857</span>),</a>
+<a class="sourceLine" id="cb61-6" data-line-number="6">  ST_transform(ST_GeomFromText(<span class="st">&#39;POINT(-21.8628 64.1286)&#39;</span>, <span class="dv">4326</span>), <span class="dv">3857</span>)</a>
+<a class="sourceLine" id="cb61-7" data-line-number="7">);</a></code></pre></div>
+<p>Ecrivez la même requête en utilisant cette fois-ci le type geography (il faut donc utiliser la fonction <a href="https://postgis.net/docs/ST_GeographyFromText.html">ST_GeographyFromText</a> ou l’opérateur de CAST ::geography).</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb62-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb62-2" data-line-number="2"><span class="co">-- Avec le type geography :</span></a>
+<a class="sourceLine" id="cb62-3" data-line-number="3"><span class="co">-- Distance entre une ligne Paris/ Los Angeles, et l&#39;Islande</span></a>
+<a class="sourceLine" id="cb62-4" data-line-number="4"><span class="kw">SELECT</span> ST_Distance(</a>
+<a class="sourceLine" id="cb62-5" data-line-number="5">  ST_GeographyFromText(<span class="st">&#39;LINESTRING(-118.4079 33.9434, 2.5559 49.0083)&#39;</span>), <span class="co">-- LAX-CDG</span></a>
+<a class="sourceLine" id="cb62-6" data-line-number="6">  ST_GeographyFromText(<span class="st">&#39;POINT(-21.8628 64.1286)&#39;</span>)                        <span class="co">-- Iceland</span></a>
+<a class="sourceLine" id="cb62-7" data-line-number="7">);</a>
+<a class="sourceLine" id="cb62-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb62-9" data-line-number="9"><span class="co">-- ou</span></a>
+<a class="sourceLine" id="cb62-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb62-11" data-line-number="11"><span class="kw">SELECT</span> ST_Distance(</a>
+<a class="sourceLine" id="cb62-12" data-line-number="12">  ST_GeomFromText(<span class="st">&#39;LINESTRING(-118.4079 33.9434, 2.5559 49.0083)&#39;</span>):<span class="ch">:geography</span>, <span class="co">-- LAX-CDG</span></a>
+<a class="sourceLine" id="cb62-13" data-line-number="13">  ST_GeomFromText(<span class="st">&#39;POINT(-21.8628 64.1286)&#39;</span>):<span class="ch">:geography</span>                        <span class="co">-- Iceland</span></a>
+<a class="sourceLine" id="cb62-14" data-line-number="14">);</a></code></pre></div>
+<p>On voit que la distance retournée quand on fonctionne en mode geography est plus beaucoup courte que celle calculée en projection L93. Elle tient compte du fait que la terre n’est pas plate.</p>
+<figure>
+<img src="./assets/img/lax_cdg.jpg" title="Différence geometry / geography" alt="Geography" /><figcaption>Geography</figcaption>
+</figure>
 </body>
 </html>

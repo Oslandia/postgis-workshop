@@ -69,13 +69,13 @@ Quelques liens utiles pour commencer:
 <div class="sommaire-2">[9.3 D'autres fonction de collecte](#dautres-fonction-de-collecte)</div>
 <div class="sommaire-2">[9.4 Fusion de lignes](#fusion-de-lignes)</div>
 <div class="sommaire-1">[10 Accesseurs](#accesseurs)</div>
-<div class="sommaire-1">[11 Type Geography](#type-geography)</div>
-<div class="sommaire-1">[12 Analyses](#analyses)</div>
-<div class="sommaire-2">[12.1 ST_Intersects (intersections de géométries)](#st_intersects-intersections-de-géométries)</div>
-<div class="sommaire-2">[12.2 Généralisation](#généralisation)</div>
-<div class="sommaire-2">[12.3 Recherche par buffer](#recherche-par-buffer)</div>
-<div class="sommaire-2">[12.4 Plus proches voisins](#plus-proches-voisins)</div>
-<div class="sommaire-2">[12.5 Référencement linéaire](#référencement-linéaire)</div>
+<div class="sommaire-1">[11 Analyses](#analyses)</div>
+<div class="sommaire-2">[11.1 ST_Intersects (intersections de géométries)](#st_intersects-intersections-de-géométries)</div>
+<div class="sommaire-2">[11.2 Généralisation](#généralisation)</div>
+<div class="sommaire-2">[11.3 Recherche par buffer](#recherche-par-buffer)</div>
+<div class="sommaire-2">[11.4 Plus proches voisins](#plus-proches-voisins)</div>
+<div class="sommaire-2">[11.5 Référencement linéaire](#référencement-linéaire)</div>
+<div class="sommaire-1">[12 Type Geography](#type-geography)</div>
 
 ## 2 Pour bien commencer
 
@@ -1039,74 +1039,10 @@ A propos de la requête :
 - Affichez les résultats sur une carte en utilisant par exemple : http://geojson.io
 
 
+## 11 Analyses
 
 
-## 11 Type Geography
-
-La terre n'est pas plate, et on veut parfois ne pas travailler dans un système de projection. Pour cela, PostGIS propose un type **geography**.
-
-```sql
-create table capitals (
-    id serial,
-    name varchar,
-    geom geography(POINT,4326)
-);
-```
-
-Limitations :
-
-* Latitude/Longitude seulement (SRID:4326 si PostGIS < 2.1.6)
-* pas toutes les fonctions PostGIS implémentées
-* fonctionne avec tous les standards OGC sauf les courbes (*CURVES)
-
-Petit exercice pratique sur le type géographique, nous allons prendre l'exemple connu d'un avion faisant le trajet Paris / Los Angeles. A combien de Km passe-t-il de l'Islande ?
-
-
-Ecrivez la requête permettant de calculer la distance entre une ligne de coordonnées -118.4079 33.9434, 2.5559 49.0083 et un point de coordonnées 2.5559 49.0083. Exprimez le résultat en projection mercator (SRID = 3857).
-
-```sql
-
--- Requête en prenant la projection mercator :
-
-SELECT ST_Distance(
-  ST_transform(ST_GeomFromText('LINESTRING(-118.4079 33.9434, 2.5559 49.0083)', 4326), 3857),
-  ST_transform(ST_GeomFromText('POINT(-21.8628 64.1286)', 4326), 3857)
-);
-
-```
-
-
-Ecrivez la même requête en utilisant cette fois-ci le type geography (il faut donc utiliser la fonction [ST_GeographyFromText](https://postgis.net/docs/ST_GeographyFromText.html) ou l'opérateur de CAST ::geography).
-
-
-```sql
-
--- Avec le type geography :
--- Distance entre une ligne Paris/ Los Angeles, et l'Islande
-SELECT ST_Distance(
-  ST_GeographyFromText('LINESTRING(-118.4079 33.9434, 2.5559 49.0083)'), -- LAX-CDG
-  ST_GeographyFromText('POINT(-21.8628 64.1286)')                        -- Iceland
-);
-
--- ou
-
-SELECT ST_Distance(
-  ST_GeomFromText('LINESTRING(-118.4079 33.9434, 2.5559 49.0083)')::geography, -- LAX-CDG
-  ST_GeomFromText('POINT(-21.8628 64.1286)')::geography                        -- Iceland
-);
-
-```
-
-On voit que la distance retournée quand on fonctionne en mode geography est plus beaucoup courte que celle calculée en projection L93. Elle tient compte du fait que la terre n'est pas plate.
-
-
-![Geography](./assets/img/lax_cdg.jpg "Différence geometry / geography")
-
-
-## 12 Analyses
-
-
-### 12.1 ST_Intersects (intersections de géométries)
+### 11.1 ST_Intersects (intersections de géométries)
 
 L'une des opérations les plus courantes lorsqu'on manipule des objets géométriques est l'intersection spatiale. Comment trouver un ensemble de points à l'intérieur d'un polygone ? Est-ce que ces deux polygones se superposent ? Cette ligne passe-t-elle au travers de ce polygone ?
 PostGIS propose pour cela la fonction [ST_Intersects](https://postgis.net/docs/ST_Intersects.html).
@@ -1169,7 +1105,7 @@ Vous devez toujours le faire de manière explicite.
 
 
 
-### 12.2 Généralisation
+### 11.2 Généralisation
 
 Généralisation de données = simplification de géométries :
 
@@ -1214,7 +1150,7 @@ A propos de la requête :
 
 
 
-### 12.3 Recherche par buffer
+### 11.3 Recherche par buffer
 
 
 Récupérons les communes situées à 50km du centre de Toulouse :
@@ -1283,7 +1219,7 @@ A propos de la requête :
 - Les index et les opérateurs spatiaux peuvent améliorer grandement les performances
 
 
-### 12.4 Plus proches voisins
+### 11.4 Plus proches voisins
 
 
 Les grandes communes sont généralement situées le long des grands fleuves.
@@ -1313,7 +1249,7 @@ A propos de la requête :
 - Opérateur KNN <#> et <->
 
 
-### 12.5 Référencement linéaire
+### 11.5 Référencement linéaire
 
 Fonctions de référencement Linéaire (cas de tronçons routiers)
 
@@ -1325,4 +1261,66 @@ Fonctions de référencement Linéaire (cas de tronçons routiers)
 * [ST_line_locate_point(LineString, Point)](http://postgis.net/docs/manual-2.1/ST_Line_Locate_Point.html)
 * [ST_locate_along_measure(geometry, float8)](https://postgis.net/docs/manual-1.4/ST_Locate_Along_Measure.html)
 
+
+
+## 12 Type Geography
+
+La terre n'est pas plate, et on veut parfois ne pas travailler dans un système de projection. Pour cela, PostGIS propose un type **geography**.
+
+```sql
+create table capitals (
+    id serial,
+    name varchar,
+    geom geography(POINT,4326)
+);
+```
+
+Limitations :
+
+* Latitude/Longitude seulement (SRID:4326 si PostGIS < 2.1.6)
+* pas toutes les fonctions PostGIS implémentées
+* fonctionne avec tous les standards OGC sauf les courbes (*CURVES)
+
+Petit exercice pratique sur le type géographique, nous allons prendre l'exemple connu d'un avion faisant le trajet Paris / Los Angeles. A combien de Km passe-t-il de l'Islande ?
+
+
+Ecrivez la requête permettant de calculer la distance entre une ligne de coordonnées -118.4079 33.9434, 2.5559 49.0083 et un point de coordonnées 2.5559 49.0083. Exprimez le résultat en projection mercator (SRID = 3857).
+
+```sql
+
+-- Requête en prenant la projection mercator :
+
+SELECT ST_Distance(
+  ST_transform(ST_GeomFromText('LINESTRING(-118.4079 33.9434, 2.5559 49.0083)', 4326), 3857),
+  ST_transform(ST_GeomFromText('POINT(-21.8628 64.1286)', 4326), 3857)
+);
+
+```
+
+
+Ecrivez la même requête en utilisant cette fois-ci le type geography (il faut donc utiliser la fonction [ST_GeographyFromText](https://postgis.net/docs/ST_GeographyFromText.html) ou l'opérateur de CAST ::geography).
+
+
+```sql
+
+-- Avec le type geography :
+-- Distance entre une ligne Paris/ Los Angeles, et l'Islande
+SELECT ST_Distance(
+  ST_GeographyFromText('LINESTRING(-118.4079 33.9434, 2.5559 49.0083)'), -- LAX-CDG
+  ST_GeographyFromText('POINT(-21.8628 64.1286)')                        -- Iceland
+);
+
+-- ou
+
+SELECT ST_Distance(
+  ST_GeomFromText('LINESTRING(-118.4079 33.9434, 2.5559 49.0083)')::geography, -- LAX-CDG
+  ST_GeomFromText('POINT(-21.8628 64.1286)')::geography                        -- Iceland
+);
+
+```
+
+On voit que la distance retournée quand on fonctionne en mode geography est plus beaucoup courte que celle calculée en projection L93. Elle tient compte du fait que la terre n'est pas plate.
+
+
+![Geography](./assets/img/lax_cdg.jpg "Différence geometry / geography")
 

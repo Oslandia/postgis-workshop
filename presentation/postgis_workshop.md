@@ -984,70 +984,6 @@ A propos de la requête :
 - Affichez les résultats sur une carte en utilisant par exemple : http://geojson.io
 
 
-
-
-## Type Geography
-
-La terre n'est pas plate, et on veut parfois ne pas travailler dans un système de projection. Pour cela, PostGIS propose un type **geography**.
-
-```sql
-create table capitals (
-    id serial,
-    name varchar,
-    geom geography(POINT,4326)
-);
-```
-
-Limitations :
-
-* Latitude/Longitude seulement (SRID:4326 si PostGIS < 2.1.6)
-* pas toutes les fonctions PostGIS implémentées
-* fonctionne avec tous les standards OGC sauf les courbes (*CURVES)
-
-Petit exercice pratique sur le type géographique, nous allons prendre l'exemple connu d'un avion faisant le trajet Paris / Los Angeles. A combien de Km passe-t-il de l'Islande ?
-
-
-Ecrivez la requête permettant de calculer la distance entre une ligne de coordonnées -118.4079 33.9434, 2.5559 49.0083 et un point de coordonnées 2.5559 49.0083. Exprimez le résultat en projection mercator (SRID = 3857).
-
-```sql
-
--- Requête en prenant la projection mercator :
-
-SELECT ST_Distance(
-  ST_transform(ST_GeomFromText('LINESTRING(-118.4079 33.9434, 2.5559 49.0083)', 4326), 3857),
-  ST_transform(ST_GeomFromText('POINT(-21.8628 64.1286)', 4326), 3857)
-);
-
-```
-
-
-Ecrivez la même requête en utilisant cette fois-ci le type geography (il faut donc utiliser la fonction [ST_GeographyFromText](https://postgis.net/docs/ST_GeographyFromText.html) ou l'opérateur de CAST ::geography).
-
-
-```sql
-
--- Avec le type geography :
--- Distance entre une ligne Paris/ Los Angeles, et l'Islande
-SELECT ST_Distance(
-  ST_GeographyFromText('LINESTRING(-118.4079 33.9434, 2.5559 49.0083)'), -- LAX-CDG
-  ST_GeographyFromText('POINT(-21.8628 64.1286)')                        -- Iceland
-);
-
--- ou
-
-SELECT ST_Distance(
-  ST_GeomFromText('LINESTRING(-118.4079 33.9434, 2.5559 49.0083)')::geography, -- LAX-CDG
-  ST_GeomFromText('POINT(-21.8628 64.1286)')::geography                        -- Iceland
-);
-
-```
-
-On voit que la distance retournée quand on fonctionne en mode geography est plus beaucoup courte que celle calculée en projection L93. Elle tient compte du fait que la terre n'est pas plate.
-
-
-![Geography](./assets/img/lax_cdg.jpg "Différence geometry / geography")
-
-
 ## Analyses
 
 
@@ -1270,4 +1206,66 @@ Fonctions de référencement Linéaire (cas de tronçons routiers)
 * [ST_line_locate_point(LineString, Point)](http://postgis.net/docs/manual-2.1/ST_Line_Locate_Point.html)
 * [ST_locate_along_measure(geometry, float8)](https://postgis.net/docs/manual-1.4/ST_Locate_Along_Measure.html)
 
+
+
+## Type Geography
+
+La terre n'est pas plate, et on veut parfois ne pas travailler dans un système de projection. Pour cela, PostGIS propose un type **geography**.
+
+```sql
+create table capitals (
+    id serial,
+    name varchar,
+    geom geography(POINT,4326)
+);
+```
+
+Limitations :
+
+* Latitude/Longitude seulement (SRID:4326 si PostGIS < 2.1.6)
+* pas toutes les fonctions PostGIS implémentées
+* fonctionne avec tous les standards OGC sauf les courbes (*CURVES)
+
+Petit exercice pratique sur le type géographique, nous allons prendre l'exemple connu d'un avion faisant le trajet Paris / Los Angeles. A combien de Km passe-t-il de l'Islande ?
+
+
+Ecrivez la requête permettant de calculer la distance entre une ligne de coordonnées -118.4079 33.9434, 2.5559 49.0083 et un point de coordonnées 2.5559 49.0083. Exprimez le résultat en projection mercator (SRID = 3857).
+
+```sql
+
+-- Requête en prenant la projection mercator :
+
+SELECT ST_Distance(
+  ST_transform(ST_GeomFromText('LINESTRING(-118.4079 33.9434, 2.5559 49.0083)', 4326), 3857),
+  ST_transform(ST_GeomFromText('POINT(-21.8628 64.1286)', 4326), 3857)
+);
+
+```
+
+
+Ecrivez la même requête en utilisant cette fois-ci le type geography (il faut donc utiliser la fonction [ST_GeographyFromText](https://postgis.net/docs/ST_GeographyFromText.html) ou l'opérateur de CAST ::geography).
+
+
+```sql
+
+-- Avec le type geography :
+-- Distance entre une ligne Paris/ Los Angeles, et l'Islande
+SELECT ST_Distance(
+  ST_GeographyFromText('LINESTRING(-118.4079 33.9434, 2.5559 49.0083)'), -- LAX-CDG
+  ST_GeographyFromText('POINT(-21.8628 64.1286)')                        -- Iceland
+);
+
+-- ou
+
+SELECT ST_Distance(
+  ST_GeomFromText('LINESTRING(-118.4079 33.9434, 2.5559 49.0083)')::geography, -- LAX-CDG
+  ST_GeomFromText('POINT(-21.8628 64.1286)')::geography                        -- Iceland
+);
+
+```
+
+On voit que la distance retournée quand on fonctionne en mode geography est plus beaucoup courte que celle calculée en projection L93. Elle tient compte du fait que la terre n'est pas plate.
+
+
+![Geography](./assets/img/lax_cdg.jpg "Différence geometry / geography")
 
