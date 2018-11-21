@@ -40,7 +40,7 @@ $ cd workshop/postgis-workshop-master
 
 La première étape est de créer la base de données et de charger les données
 
-Lancez les 3 scripts contenus dans le répertoire _scripts_ pour créer la base, téléchargez le jeu de test, et chargez les données dans la base.
+Lancez les 3 scripts contenus dans le répertoire _scripts_ pour créer la base, télécharger le jeu de test, et charger les données dans la base.
 
 Pour charger les shapefiles, vous pouvez aussi utiliser l'utilitaire _shp2pgsql-gui_.
 
